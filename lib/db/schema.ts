@@ -4,7 +4,8 @@ export const userTable = pgTable("user", {
   id: text("id").primaryKey(),
   email: text("email").notNull().unique(),
   hashedPassword: text("hashed_password"),
-  isEmailVerified: boolean("is_email_verified").notNull().default(false),
+  isEmailVerified: boolean("is_email_verified").notNull().default(true),
+  fullName: text("full_name").notNull(),
   googleId: text("googleId").unique(),
 });
 

@@ -64,7 +64,7 @@ const SignInForm = () => {
     } else if (res.success) {
       toast({
         variant: "default",
-        description: "account created successfully",
+        description: "Log in success",
       });
       router.replace("/");
     }

@@ -43,6 +43,7 @@ const SignUpForm = () => {
     resolver: zodResolver(signUpSchema),
     defaultValues: {
       email: "",
+      fullName: "",
       password: "",
       confirmPassword: "",
     },
@@ -91,6 +92,20 @@ const SignUpForm = () => {
         </h1>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+            <FormField
+              control={form.control}
+              name="fullName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Full Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="your name" {...field} />
+                  </FormControl>
+
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="email"

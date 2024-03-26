@@ -10,6 +10,8 @@ import { cookies } from "next/headers";
 import { z } from "zod";
 import * as argon2 from "argon2";
 import jwt from "jsonwebtoken";
+import { generateCodeVerifier, generateState } from "arctic";
+import { google } from "@/lib/oauth";
 
 export const signUp = async (values: z.infer<typeof signUpSchema>) => {
   console.log(values);
@@ -17,6 +19,16 @@ export const signUp = async (values: z.infer<typeof signUpSchema>) => {
   const hashedPassword = await argon2.hash(values.password);
   const userId = generateId(15);
   try {
+    const userExist = await db.query.userTable.findFirst({
+      where: eq(userTable.email, values.email),
+    });
+
+    if (userExist) {
+      return {
+        error: "Email already used by another account",
+      };
+    }
+
     await db.insert(userTable).values({
       id: userId,
       email: values.email,
@@ -200,5 +212,39 @@ export const resendEmailVerification = async (email: string) => {
     return {
       error: error?.message,
     };
+  }
+};
+
+export const createGoogleAuthorizationURL = async () => {
+  try {
+    const state = generateState();
+    const codeVerifier = generateCodeVerifier();
+
+    cookies().set("codeVerifier", codeVerifier, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
+
+    cookies().set("state", state, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
+
+    const authorizationURL = await google.createAuthorizationURL(
+      state,
+      codeVerifier,
+      {
+        scopes: [],
+      }
+    );
+
+    return {
+      success: true,
+      data: authorizationURL,
+    };
+  } catch (error: any) {
+    return { error: error?.message };
   }
 };

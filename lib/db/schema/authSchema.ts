@@ -1,12 +1,19 @@
-import { boolean, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { userTable } from "./userSchema";
 
-export const userTable = pgTable("user", {
+export const oauthAccountTable = pgTable("oauth_account", {
   id: text("id").primaryKey(),
-  email: text("email").notNull().unique(),
-  hashedPassword: text("hashed_password"),
-  isEmailVerified: boolean("is_email_verified").notNull().default(true),
-  fullName: text("full_name").notNull(),
-  googleId: text("googleId").unique(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => userTable.id),
+  provider: text("provider").notNull(),
+  providerUserId: text("provider_user_id").notNull(),
+  accessToken: text("access_token").notNull(),
+  refreshToken: text("refesh_token"),
+  expiresAt: timestamp("expires_at", {
+    withTimezone: true,
+    mode: "date",
+  }).notNull(),
 });
 
 export const emailVerificationTable = pgTable("email_verification", {

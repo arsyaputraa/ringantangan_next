@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  createGoogleAuthorizationURL,
   resendEmailVerification,
   signIn,
   signUp,
@@ -64,7 +65,7 @@ const SignInForm = () => {
     } else if (res.success) {
       toast({
         variant: "default",
-        description: "Log in success",
+        description: res.success ?? "Logged in",
       });
       router.replace("/");
     }
@@ -84,6 +85,15 @@ const SignInForm = () => {
     }
   }
 
+  const handleGoogleLogin = async () => {
+    const res = await createGoogleAuthorizationURL();
+    if (res.error) {
+      toast({ variant: "destructive", description: res.error });
+    } else if (res.success) {
+      window.location.href = res.data.toString();
+    }
+  };
+
   return (
     <div className="flex items-center justify-center h-screen w-full">
       <Card className="bg-secondary flex flex-col px-10 w-2/6 py-5 ">
@@ -97,6 +107,9 @@ const SignInForm = () => {
         <h1 className="text-2xl text-secondary-forefround font-bold text-center mb-5">
           Sign In
         </h1>
+        <Button type="button" className="mb-5" onClick={handleGoogleLogin}>
+          Sign in with Google
+        </Button>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
             <FormField

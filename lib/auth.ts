@@ -3,6 +3,7 @@ import { Lucia } from "lucia";
 import { cache } from "react";
 import { cookies } from "next/headers";
 import adapter from "./db/adapter";
+import { roleEnums } from "./db/schema/";
 
 export const lucia = new Lucia(adapter, {
   sessionCookie: {

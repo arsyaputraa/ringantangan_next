@@ -4,8 +4,9 @@ import { and, eq } from "drizzle-orm";
 import db from "@/lib/db";
 import { lucia } from "@/lib/auth";
 import { cookies } from "next/headers";
-import { emailVerificationTable, userTable } from "@/lib/db/schema";
+import { emailVerificationTable } from "@/lib/db/schema/authSchema";
 import { redirect } from "next/dist/server/api-utils";
+import { userTable } from "@/lib/db/schema";
 
 export const GET = async (req: NextRequest) => {
   const url = new URL(req.url);

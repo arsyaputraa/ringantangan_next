@@ -2,7 +2,7 @@
 
 import { lucia, validateRequest } from "@/lib/auth";
 import db from "@/lib/db";
-import { emailVerificationTable, userTable } from "@/lib/db/schema";
+import { emailVerificationTable } from "@/lib/db/schema/authSchema";
 import { signInSchema, signUpSchema } from "@/lib/validationSchema/authSchema";
 import { eq } from "drizzle-orm";
 import { generateId } from "lucia";
@@ -12,6 +12,7 @@ import * as argon2 from "argon2";
 import jwt from "jsonwebtoken";
 import { generateCodeVerifier, generateState } from "arctic";
 import { google } from "@/lib/oauth";
+import { userTable } from "@/lib/db/schema";
 
 export const signUp = async (values: z.infer<typeof signUpSchema>) => {
   console.log(values);
@@ -223,20 +224,18 @@ export const createGoogleAuthorizationURL = async () => {
     cookies().set("codeVerifier", codeVerifier, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
     });
 
     cookies().set("state", state, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
     });
 
     const authorizationURL = await google.createAuthorizationURL(
       state,
       codeVerifier,
       {
-        scopes: [],
+        scopes: ["email", "profile"],
       }
     );
 

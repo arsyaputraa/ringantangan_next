@@ -17,10 +17,19 @@ export const signUp = async (values: z.infer<typeof signUpSchema>) => {
   const hashedPassword = await argon2.hash(values.password);
   const userId = generateId(15);
   try {
+    const isUserExist = await db.query.userTable.findFirst({
+      where: eq(userTable.email, values.email),
+    });
+
+    if (isUserExist) {
+      return { error: "user already exist" };
+    }
+
     await db.insert(userTable).values({
       id: userId,
       email: values.email,
       hashedPassword: hashedPassword,
+      fullName: values.fullName,
     });
 
     const code = Math.random().toString(36).substring(2, 8);

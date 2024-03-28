@@ -3,6 +3,10 @@ import { z } from "zod";
 export const signUpSchema = z
   .object({
     email: z.string().email({ message: "invalid email address" }),
+    fullName: z
+      .string()
+      .min(3, { message: "full name must be at least 3 characters" })
+      .max(40, { message: "cant be more than 40 characters" }),
     password: z
       .string()
       .min(8, { message: "password must be at least 8 characters" }),

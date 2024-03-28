@@ -7,8 +7,9 @@ const AdminPage = async () => {
 
   if (!user) return redirect("/signin");
 
-  if (user.role !== "admin" || user.role !== "superadmin") return redirect("/");
-  return <div>admin - admin only</div>;
+  if (user.role === "admin" || user.role === "superadmin")
+    return <div>admin - admin only</div>;
+  else return redirect("/");
 };
 
 export default AdminPage;

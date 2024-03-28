@@ -1,9 +1,8 @@
 // src/auth.ts
 import { Lucia } from "lucia";
-import { cache } from "react";
 import { cookies } from "next/headers";
+import { cache } from "react";
 import adapter from "./db/adapter";
-import { roleEnums } from "./db/schema/";
 
 export const lucia = new Lucia(adapter, {
   sessionCookie: {
@@ -20,6 +19,8 @@ export const lucia = new Lucia(adapter, {
       name: attributes.fullName,
       email: attributes.email,
       id: attributes.id,
+      role: attributes.role,
+      avatar: attributes.avatar,
     };
   },
 });
@@ -67,4 +68,6 @@ interface DatabaseUserAttributes {
   email: string;
   id: string;
   fullName: string;
+  role: string;
+  avatar: string;
 }

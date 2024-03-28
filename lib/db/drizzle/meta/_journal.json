@@ -43,6 +43,13 @@
       "when": 1711634260022,
       "tag": "0005_violet_boom_boom",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1711643556164,
+      "tag": "0006_legal_slapstick",
+      "breakpoints": true
     }
   ]
 }

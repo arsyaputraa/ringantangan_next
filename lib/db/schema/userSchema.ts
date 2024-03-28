@@ -7,8 +7,8 @@ export const userTable = pgTable("user", {
   email: text("email").notNull().unique(),
   hashedPassword: text("hashed_password"),
   isEmailVerified: boolean("is_email_verified").notNull().default(true),
-  full_name: text("full_name"),
-  googleId: text("googleId").unique(),
+  fullName: text("full_name"),
+  googleId: text("google_id").unique(),
   role: roleEnums("role").notNull().default("user"),
   avatar: text("avatar"),
 });

@@ -2,17 +2,18 @@
 
 import { lucia, validateRequest } from "@/lib/auth";
 import db from "@/lib/db";
+import { userTable } from "@/lib/db/schema";
 import { emailVerificationTable } from "@/lib/db/schema/authSchema";
+import { google } from "@/lib/oauth";
 import { signInSchema, signUpSchema } from "@/lib/validationSchema/authSchema";
+import { generateCodeVerifier, generateState } from "arctic";
+import * as argon2 from "argon2";
 import { eq } from "drizzle-orm";
+import jwt from "jsonwebtoken";
 import { generateId } from "lucia";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { z } from "zod";
-import * as argon2 from "argon2";
-import jwt from "jsonwebtoken";
-import { generateCodeVerifier, generateState } from "arctic";
-import { google } from "@/lib/oauth";
-import { userTable } from "@/lib/db/schema";
 
 export const signUp = async (values: z.infer<typeof signUpSchema>) => {
   console.log(values);
@@ -142,6 +143,7 @@ export const signOut = async () => {
       sessionCookie.value,
       sessionCookie.attributes
     );
+    revalidatePath("/");
   } catch (error: any) {
     return {
       error: error?.message,

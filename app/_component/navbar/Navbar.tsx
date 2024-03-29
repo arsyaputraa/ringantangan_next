@@ -2,7 +2,6 @@
 import { signOut } from "@/actions/auth.actions";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,30 +10,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Separator } from "@/components/ui/separator";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+
 import { cn } from "@/lib/utils";
 import { useSession } from "@/providers/SessionProviders";
-import {
-  BoxesIcon,
-  LayoutDashboardIcon,
-  LogOutIcon,
-  LucideSpeaker,
-  PenToolIcon,
-  RadarIcon,
-  RadioTowerIcon,
-  Settings,
-  SpeakerIcon,
-} from "lucide-react";
+import { LogOutIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import AdminSheet from "./AdminSheet";
 
 const navbarItems = [
   {
@@ -57,7 +39,7 @@ const Navbar = () => {
   const { user, session } = useSession();
   return (
     <>
-      <header className="max-w-[1440px] mx-auto px-5 flex items-center justify-between">
+      <header className="w-full bg-background sticky top-0 left-0 mx-auto px-5 flex items-center justify-between">
         <h1 className="font-bold text-lg">Ringantangan</h1>
         <ul className="flex justify-center gap-5 py-5">
           {navbarItems.map((item, idx) => {
@@ -76,43 +58,7 @@ const Navbar = () => {
             );
           })}
           {user?.role === "admin" ||
-            (user?.role === "superadmin" && (
-              <Sheet>
-                <SheetTrigger asChild>
-                  <Button className=" bg-blue-950">
-                    <Settings className="mr-1" width={16} height={16} />
-                    ADMIN
-                  </Button>
-                </SheetTrigger>
-                <SheetContent className="w-[400px] sm:w-[540px]" side="left">
-                  <SheetHeader className="mb-5">
-                    <SheetTitle>ADMIN MENU</SheetTitle>
-                    <SheetDescription>
-                      Ringantangan Admin Menu Panel
-                    </SheetDescription>
-                  </SheetHeader>
-                  <Separator />
-                  <Card className="shadow-sm p-5 flex flex-col gap-2 mt-5">
-                    <Button className="flex justify-between">
-                      DASHBOARD
-                      <LayoutDashboardIcon
-                        className="mr-1"
-                        width={16}
-                        height={16}
-                      />
-                    </Button>
-                    <Button variant="outline" className="flex justify-between">
-                      POSTS
-                      <BoxesIcon className="mr-1" width={16} height={16} />
-                    </Button>{" "}
-                    <Button variant="outline" className="flex justify-between">
-                      ANNOUNCEMENTS
-                      <RadioTowerIcon className="mr-1" width={16} height={16} />
-                    </Button>
-                  </Card>
-                </SheetContent>
-              </Sheet>
-            ))}
+            (user?.role === "superadmin" && <AdminSheet />)}
         </ul>
         {!!session ? (
           <DropdownMenu>

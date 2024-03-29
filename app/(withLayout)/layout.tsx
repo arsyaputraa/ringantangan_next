@@ -1,5 +1,5 @@
 import React from "react";
-import Navbar from "../_component/Navbar";
+import Navbar from "../_component/navbar/Navbar";
 
 const SharedLayout = ({
   children,

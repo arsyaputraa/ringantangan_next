@@ -50,6 +50,34 @@
       "when": 1711643556164,
       "tag": "0006_legal_slapstick",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1711712954690,
+      "tag": "0007_icy_firedrake",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "5",
+      "when": 1711713184994,
+      "tag": "0008_quiet_senator_kelly",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "5",
+      "when": 1711713235280,
+      "tag": "0009_aberrant_vapor",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "5",
+      "when": 1711714400134,
+      "tag": "0010_past_manta",
+      "breakpoints": true
     }
   ]
 }

@@ -90,7 +90,7 @@ export const GET = async (req: NextRequest) => {
           .insert(userTable)
           .values({
             id: userId,
-            full_name: googleData.given_name,
+            fullName: googleData.given_name,
             email: googleData.email,
             avatar: googleData.picture,
           })

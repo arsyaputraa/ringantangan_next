@@ -1,13 +1,9 @@
+import BlogCard from "@/app/_component/blog/blogCard";
 import db from "@/lib/db";
-import { postTable } from "@/lib/db/schema";
 import { Post } from "@/types/post";
-import { eq } from "drizzle-orm";
-import BlogCard from "../../_component/blog/blogCard";
 
-const BlogPage = async () => {
-  const posts = (await db.query.postTable.findMany({
-    where: eq(postTable.isPublic, true),
-  })) as unknown as Post[];
+const AdminBlogPage = async () => {
+  const posts = (await db.query.postTable.findMany()) as unknown as Post[];
 
   if (posts.length > 0)
     return (
@@ -26,4 +22,4 @@ const BlogPage = async () => {
     );
 };
 
-export default BlogPage;
+export default AdminBlogPage;

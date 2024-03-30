@@ -1,5 +1,5 @@
 "use client";
-import { POSTCreateBlog } from "@/actions/post.actions";
+import { POSTCreateBlog, POSTEditBlog } from "@/actions/post.actions";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -14,26 +14,24 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
-import { createPostSchema } from "@/types/post";
+import { createPostSchema, editPostSchema, Post } from "@/types/post";
 import { zodResolver } from "@hookform/resolvers/zod";
+import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-const CreateBlogForm = () => {
+const EditBlogForm = ({ post }: { post: Post }) => {
   const router = useRouter();
-  const form = useForm<z.infer<typeof createPostSchema>>({
+  const form = useForm<z.infer<typeof editPostSchema>>({
     reValidateMode: "onBlur",
-    resolver: zodResolver(createPostSchema),
-    defaultValues: {
-      title: "",
-      content: "",
-      isPublic: true,
-    },
+    resolver: zodResolver(editPostSchema),
+    defaultValues: post,
   });
 
-  async function onSubmit(values: z.infer<typeof createPostSchema>) {
-    const res = await POSTCreateBlog(values);
+  async function onSubmit(values: z.infer<typeof editPostSchema>) {
+    const newValue: Post = { ...post, ...values };
+    const res = await POSTEditBlog(newValue);
 
     if (!!res.error) {
       return toast({
@@ -67,7 +65,15 @@ const CreateBlogForm = () => {
         className="flex flex-col mt-4 pb-10 gap-3 items-center justify-start w-full mx-auto"
       >
         <div className="w-full max-w-lg">
-          <h1 className="text-xl font-bold">Create a Post</h1>
+          <h1
+            onClick={() => {
+              console.log(form.formState.errors);
+            }}
+            className="text-xl font-bold"
+          >
+            Edit a Post
+          </h1>
+          {/* <p>Last Updated : {dayjs()}</p> */}
         </div>
 
         <FormField
@@ -132,6 +138,7 @@ const CreateBlogForm = () => {
 
         <Button
           type="submit"
+          disabled={form.formState.isSubmitting || !form.formState.isDirty}
           variant="default"
           className="w-full max-w-lg mt-4"
         >
@@ -142,4 +149,4 @@ const CreateBlogForm = () => {
   );
 };
 
-export default CreateBlogForm;
+export default EditBlogForm;

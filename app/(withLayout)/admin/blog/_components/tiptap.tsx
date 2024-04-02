@@ -6,6 +6,7 @@ import Toolbar from "./toolbar";
 import Heading from "@tiptap/extension-heading";
 import Link from "@tiptap/extension-link";
 import { cn } from "@/lib/utils";
+import HardBreak from "@tiptap/extension-hard-break";
 const Tiptap = ({
   content,
   onChange,
@@ -21,20 +22,23 @@ const Tiptap = ({
       Heading.configure({
         HTMLAttributes: {
           class: "text-xl font-bold",
-          levels: [2],
         },
+        levels: [2],
       }),
       Link.configure({
         HTMLAttributes: {
           class: "underline text-blue-500 cursor-pointer",
         },
       }),
+      HardBreak.configure({
+        keepMarks: false,
+      }),
     ],
     content: content,
     editorProps: {
       attributes: {
         class: cn(
-          "flex min-h-[300px] w-full rounded-md border border-input border-opacity-80 bg-background px-5 py-4 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:border-2 focus-visible:border-opacity-100 disabled:cursor-not-allowed disabled:opacity-50",
+          "min-h-[300px] w-full rounded-md border border-input border-opacity-80 bg-background px-5 py-4 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:border-2 focus-visible:border-opacity-100 disabled:cursor-not-allowed disabled:opacity-50",
           className
         ),
       },

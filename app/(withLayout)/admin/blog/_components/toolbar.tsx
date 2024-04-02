@@ -25,7 +25,7 @@ const Toolbar = ({ editor }: ToolbarProps) => {
   return (
     <div className="flex">
       <Toggle
-        pressed={editor.isActive("heading")}
+        pressed={editor.isActive("heading", { level: 2 })}
         onPressedChange={() =>
           editor.chain().focus().toggleHeading({ level: 2 }).run()
         }

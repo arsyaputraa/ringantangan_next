@@ -30,6 +30,7 @@
     "@radix-ui/react-toast": "^1.1.5",
     "@radix-ui/react-toggle": "^1.0.3",
     "@radix-ui/react-toggle-group": "^1.0.4",
+    "@tiptap/extension-hard-break": "^2.2.4",
     "@tiptap/extension-heading": "^2.2.4",
     "@tiptap/extension-link": "^2.2.4",
     "@tiptap/pm": "^2.2.4",

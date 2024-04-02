@@ -19,6 +19,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import Tiptap from "../_components/tiptap";
 
 const CreateBlogForm = () => {
   const router = useRouter();
@@ -95,12 +96,14 @@ const CreateBlogForm = () => {
             <FormItem className="w-full max-w-lg">
               <FormLabel>Content</FormLabel>
               <FormControl>
-                <Textarea
+                {/* <Textarea
                   {...field}
                   id="content"
                   className="mt-2"
                   placeholder="hari ini ringantangan telah..."
-                />
+                /> */}
+
+                <Tiptap content={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>

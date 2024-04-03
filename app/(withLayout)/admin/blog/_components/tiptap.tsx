@@ -8,6 +8,7 @@ import Link from "@tiptap/extension-link";
 import { cn } from "@/lib/utils";
 import HardBreak from "@tiptap/extension-hard-break";
 import BulletList from "@tiptap/extension-bullet-list";
+import TextAlign from "@tiptap/extension-text-align";
 const Tiptap = ({
   content,
   onChange,
@@ -37,6 +38,9 @@ const Tiptap = ({
       BulletList.configure({
         itemTypeName: "listItem",
         keepMarks: true,
+      }),
+      TextAlign.configure({
+        types: ["heading", "paragraph"],
       }),
     ],
     content: content,

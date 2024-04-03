@@ -4,6 +4,7 @@ import { Toggle } from "@/components/ui/toggle";
 import { type Editor } from "@tiptap/react";
 
 import {
+  AlignCenter,
   Bold,
   Heading,
   Italic,
@@ -15,6 +16,7 @@ import {
 import { useRef, useState } from "react";
 import { z } from "zod";
 import LinkInput from "./linkInput";
+import TextAlignTool from "./textAlignTool";
 
 type ToolbarProps = { editor: Editor | null };
 const Toolbar = ({ editor }: ToolbarProps) => {
@@ -23,7 +25,7 @@ const Toolbar = ({ editor }: ToolbarProps) => {
   }
 
   return (
-    <div className="flex px-2 py-1 bg-gray-200 rounded-md">
+    <div className="flex px-2 py-1 bg-gray-200 rounded-md items-center">
       <Toggle
         pressed={editor.isActive("heading", { level: 2 })}
         onPressedChange={() =>
@@ -48,6 +50,8 @@ const Toolbar = ({ editor }: ToolbarProps) => {
       >
         <Strikethrough className="h-4 w-4" />
       </Toggle>
+
+      <TextAlignTool editor={editor} />
       <Toggle
         pressed={editor.isActive("bulletList")}
         onPressedChange={() => editor.chain().focus().toggleBulletList().run()}

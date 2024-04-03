@@ -68,7 +68,7 @@ const CreateBlogForm = () => {
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col mt-4 pb-10 gap-3 items-center relative justify-start w-full mx-auto"
       >
-        <h1 className="text-2xl font-bold">Create a Post</h1>
+        <h1 className="text-2xl font-bold">CREATE POST</h1>
 
         <FormField
           control={form.control}
@@ -77,7 +77,7 @@ const CreateBlogForm = () => {
             <FormItem className="w-full max-w-2xl">
               <FormControl>
                 <Input
-                  className="mt-2 border-none focus-visible:border-none text-2xl font-bold"
+                  className="mt-2 border-none focus-visible:border-none text-xl font-bold"
                   type="text"
                   placeholder="Title"
                   {...field}

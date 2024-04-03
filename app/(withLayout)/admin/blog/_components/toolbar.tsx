@@ -23,7 +23,7 @@ const Toolbar = ({ editor }: ToolbarProps) => {
   }
 
   return (
-    <div className="flex">
+    <div className="flex px-2 py-1 bg-gray-200 rounded-md">
       <Toggle
         pressed={editor.isActive("heading", { level: 2 })}
         onPressedChange={() =>

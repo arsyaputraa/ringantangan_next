@@ -7,6 +7,7 @@ import Heading from "@tiptap/extension-heading";
 import Link from "@tiptap/extension-link";
 import { cn } from "@/lib/utils";
 import HardBreak from "@tiptap/extension-hard-break";
+import BulletList from "@tiptap/extension-bullet-list";
 const Tiptap = ({
   content,
   onChange,
@@ -18,14 +19,14 @@ const Tiptap = ({
 }) => {
   const editor = useEditor({
     extensions: [
-      StarterKit.configure(),
+      StarterKit.configure({}),
       Heading.configure({
         HTMLAttributes: {
           class: "text-xl font-bold",
         },
         levels: [2],
       }),
-      Link.configure({
+      Link.extend({ inclusive: false }).configure({
         HTMLAttributes: {
           class: "underline text-blue-500 cursor-pointer",
         },
@@ -33,12 +34,16 @@ const Tiptap = ({
       HardBreak.configure({
         keepMarks: false,
       }),
+      BulletList.configure({
+        itemTypeName: "listItem",
+        keepMarks: true,
+      }),
     ],
     content: content,
     editorProps: {
       attributes: {
         class: cn(
-          "min-h-[300px] w-full rounded-md border border-input border-opacity-80 bg-background px-5 py-4 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:border-2 focus-visible:border-opacity-100 disabled:cursor-not-allowed disabled:opacity-50",
+          "min-h-[350px] list-decimal w-full rounded-md bg-background px-5 py-4 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none  disabled:cursor-not-allowed disabled:opacity-50",
           className
         ),
       },

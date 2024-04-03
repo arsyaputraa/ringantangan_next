@@ -20,6 +20,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import Tiptap from "../_components/tiptap";
+import { Switch } from "@/components/ui/switch";
 
 const CreateBlogForm = () => {
   const router = useRouter();
@@ -27,8 +28,8 @@ const CreateBlogForm = () => {
     reValidateMode: "onBlur",
     resolver: zodResolver(createPostSchema),
     defaultValues: {
-      title: "",
-      content: "",
+      title: "Change this with your title",
+      content: "<p>start writing here...</p>",
       isPublic: true,
     },
   });
@@ -65,21 +66,18 @@ const CreateBlogForm = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col mt-4 pb-10 gap-3 items-center justify-start w-full mx-auto"
+        className="flex flex-col mt-4 pb-10 gap-3 items-center relative justify-start w-full mx-auto"
       >
-        <div className="w-full max-w-lg">
-          <h1 className="text-xl font-bold">Create a Post</h1>
-        </div>
+        <h1 className="text-2xl font-bold">Create a Post</h1>
 
         <FormField
           control={form.control}
           name="title"
           render={({ field }) => (
-            <FormItem className="w-full max-w-lg">
-              <FormLabel>Title</FormLabel>
+            <FormItem className="w-full max-w-2xl">
               <FormControl>
                 <Input
-                  className="mt-2"
+                  className="mt-2 border-none focus-visible:border-none text-2xl font-bold"
                   type="text"
                   placeholder="Title"
                   {...field}
@@ -93,8 +91,7 @@ const CreateBlogForm = () => {
           control={form.control}
           name="content"
           render={({ field }) => (
-            <FormItem className="w-full max-w-lg">
-              <FormLabel>Content</FormLabel>
+            <FormItem className="w-full max-w-2xl">
               <FormControl>
                 {/* <Textarea
                   {...field}
@@ -109,37 +106,43 @@ const CreateBlogForm = () => {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="isPublic"
-          render={({ field }) => (
-            <FormItem className="w-full max-w-lg">
-              <FormLabel>Content</FormLabel>
-              <FormControl>
-                <div className="w-full flex justify-start items-start max-w-lg gap-1.5">
-                  <Checkbox
-                    defaultChecked
-                    id="isPublic"
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                  <Label className="" htmlFor="isPublic">
-                    Make Post Public
-                  </Label>
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="w-full flex flex-col max-w-2xl justify-center  sticky bottom-3">
+          <FormField
+            control={form.control}
+            name="isPublic"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormControl>
+                  {/* <div className="w-full flex justify-start items-start max-w-lg gap-1.5 ">
+                    <Checkbox
+                      defaultChecked
+                      id="isPublic"
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                    <Label className="" htmlFor="isPublic">
+                      Make Post Public
+                    </Label>
+                  </div> */}
 
-        <Button
-          type="submit"
-          variant="default"
-          className="w-full max-w-lg mt-4"
-        >
-          SUBMIT
-        </Button>
+                  <div className="flex items-center space-x-2">
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                      id="public post"
+                    />
+                    <Label htmlFor="public post">Make Post Public</Label>
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <Button type="submit" variant="default" className="w-full  mt-4">
+            SUBMIT
+          </Button>
+        </div>
       </form>
     </Form>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -22,6 +22,26 @@ const LinkInput = ({ editor }: { editor: Editor | null }) => {
   const [pop, setPop] = useState(false);
 
   if (!editor) return null;
+
+  const setLink = useCallback(() => {
+    const url = linkInputRef.current?.value;
+
+    // cancelled
+    if (url === null || url === undefined) {
+      return;
+    }
+
+    // empty
+    if (url === "") {
+      editor.chain().focus().extendMarkRange("link").unsetLink().run();
+
+      return;
+    }
+
+    // update link
+    editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
+  }, [editor]);
+
   return (
     <Popover open={pop} onOpenChange={setPop}>
       <PopoverTrigger asChild>
@@ -31,7 +51,11 @@ const LinkInput = ({ editor }: { editor: Editor | null }) => {
       </PopoverTrigger>
       <PopoverContent className="flex flex-col gap-1">
         <Label htmlFor="link-input">Input link here</Label>
-        <Input id="link-input" ref={linkInputRef} />
+        <Input
+          id="link-input"
+          ref={linkInputRef}
+          defaultValue={editor.getAttributes("link").href}
+        />
         <Button
           onClick={() => {
             const validate = linkValidation.safeParse(
@@ -45,10 +69,7 @@ const LinkInput = ({ editor }: { editor: Editor | null }) => {
               return setLinkError(errorMessage);
             }
 
-            editor.commands.setLink({
-              href: validate.data,
-              target: "_blank",
-            });
+            setLink();
 
             return setPop(false);
           }}

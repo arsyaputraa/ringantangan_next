@@ -23,6 +23,7 @@ export async function POSTCreateBlog(values: z.infer<typeof createPostSchema>) {
     const postData = {
       content: values.content,
       title: values.title,
+      subtitle: values.subtitle,
       isPublic: values.isPublic,
     };
 
@@ -42,6 +43,8 @@ export async function POSTCreateBlog(values: z.infer<typeof createPostSchema>) {
 
     await db.insert(postTable).values({
       title: validatedFields.data.title,
+      subtitle: validatedFields.data.subtitle,
+
       content: validatedFields.data.content,
       createdBy: user.email,
       isPublic: validatedFields.data.isPublic,
@@ -73,6 +76,7 @@ export async function POSTEditBlog(values: Post) {
     const postData: z.infer<typeof editPostSchema> = {
       content: values.content!,
       title: values.title,
+      subtitle: values.subtitle!,
       isPublic: values.isPublic,
     };
 
@@ -94,6 +98,7 @@ export async function POSTEditBlog(values: Post) {
       .update(postTable)
       .set({
         title: validatedFields.data.title,
+        subtitle: validatedFields.data.subtitle,
         content: validatedFields.data.content,
         updatedBy: user.email,
         lastUpdatedDate: new Date().toISOString(),
@@ -133,6 +138,30 @@ export async function POSTToggleBlogVisibility({
       .update(postTable)
       .set({ isPublic: show })
       .where(eq(postTable.id, id));
+
+    revalidatePath("/blog");
+
+    return {
+      success: "Post deleted",
+    };
+  } catch (error: any) {
+    return {
+      error: `${error}`,
+    };
+  }
+}
+
+export async function DELETEpost({ id }: { id: string }) {
+  try {
+    const { user } = await validateRequest();
+
+    if (!user || user.role === "user") {
+      return {
+        error: "unauthorized",
+      };
+    }
+
+    await db.delete(postTable).where(eq(postTable.id, id));
 
     revalidatePath("/blog");
 

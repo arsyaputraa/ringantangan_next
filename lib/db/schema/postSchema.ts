@@ -15,6 +15,7 @@ export const postTable = pgTable("post", {
     .references(() => userTable.email),
   updatedBy: text("updated_by").references(() => userTable.email),
   title: text("title").notNull(),
+  subtitle: text("subtitle"),
   content: text("content"),
   picture: text("picture"),
   createdDate: timestamp("created_date", {

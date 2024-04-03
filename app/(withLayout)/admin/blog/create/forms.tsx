@@ -29,6 +29,7 @@ const CreateBlogForm = () => {
     resolver: zodResolver(createPostSchema),
     defaultValues: {
       title: "Change this with your title",
+      subtitle: "change this with your subtitle...",
       content: "<p>start writing here...</p>",
       isPublic: true,
     },
@@ -80,6 +81,23 @@ const CreateBlogForm = () => {
                   className="mt-2 border-none focus-visible:border-none text-xl font-bold"
                   type="text"
                   placeholder="Title"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="subtitle"
+          render={({ field }) => (
+            <FormItem className="w-full max-w-2xl">
+              <FormControl>
+                <Input
+                  className="mt-2 border-none focus-visible:border-none text-lg"
+                  type="text"
+                  placeholder="subtitle"
                   {...field}
                 />
               </FormControl>

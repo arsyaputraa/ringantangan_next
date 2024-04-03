@@ -87,6 +87,23 @@ const EditBlogForm = ({ post }: { post: Post }) => {
         />
         <FormField
           control={form.control}
+          name="subtitle"
+          render={({ field }) => (
+            <FormItem className="w-full max-w-2xl">
+              <FormControl>
+                <Input
+                  className="mt-2 border-none focus-visible:border-none text-lg"
+                  type="text"
+                  placeholder="subtitle"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
           name="content"
           render={({ field }) => (
             <FormItem className="w-full max-w-2xl">
@@ -138,12 +155,7 @@ const EditBlogForm = ({ post }: { post: Post }) => {
           />
 
           <Button
-            onMouseEnter={() => {
-              console.log(
-                form.getValues("content"),
-                form.getValues("isPublic")
-              );
-            }}
+            disabled={!form.formState.isDirty}
             type="submit"
             variant="default"
             className="w-full  mt-4"

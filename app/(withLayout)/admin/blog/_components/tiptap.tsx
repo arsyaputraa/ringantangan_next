@@ -9,6 +9,32 @@ import { cn } from "@/lib/utils";
 import HardBreak from "@tiptap/extension-hard-break";
 import BulletList from "@tiptap/extension-bullet-list";
 import TextAlign from "@tiptap/extension-text-align";
+
+export const tiptapExtensions = [
+  StarterKit.configure({}),
+  Heading.configure({
+    HTMLAttributes: {
+      class: "text-xl font-bold",
+    },
+    levels: [2],
+  }),
+  Link.extend({ inclusive: false }).configure({
+    HTMLAttributes: {
+      class: "underline text-blue-500 cursor-pointer",
+    },
+  }),
+  HardBreak.configure({
+    keepMarks: false,
+  }),
+  BulletList.configure({
+    itemTypeName: "listItem",
+    keepMarks: true,
+  }),
+  TextAlign.configure({
+    types: ["heading", "paragraph"],
+  }),
+];
+
 const Tiptap = ({
   content,
   onChange,
@@ -19,30 +45,7 @@ const Tiptap = ({
   className?: string;
 }) => {
   const editor = useEditor({
-    extensions: [
-      StarterKit.configure({}),
-      Heading.configure({
-        HTMLAttributes: {
-          class: "text-xl font-bold",
-        },
-        levels: [2],
-      }),
-      Link.extend({ inclusive: false }).configure({
-        HTMLAttributes: {
-          class: "underline text-blue-500 cursor-pointer",
-        },
-      }),
-      HardBreak.configure({
-        keepMarks: false,
-      }),
-      BulletList.configure({
-        itemTypeName: "listItem",
-        keepMarks: true,
-      }),
-      TextAlign.configure({
-        types: ["heading", "paragraph"],
-      }),
-    ],
+    extensions: tiptapExtensions,
     content: content,
     editorProps: {
       attributes: {

@@ -28,15 +28,14 @@ export const responseToast = ({
     success?: string;
   };
 }) => {
-  if (!res) return null;
   if (!!res.error) {
-    return toast({
+    toast({
       variant: "destructive",
       description: res.error,
       duration: 2000,
     });
   } else if (!!res.success) {
-    return toast({
+    toast({
       variant: "success",
       duration: 2000,
 

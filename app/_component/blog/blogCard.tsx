@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/card";
 import ConfirmationDialog from "@/components/ui/confirmation-dialog";
 import { Separator } from "@/components/ui/separator";
 import { validateRequest } from "@/lib/auth";
-import { getImage } from "@/lib/functions";
+import { getImage, responseToast } from "@/lib/functions";
 import { cn } from "@/lib/utils";
 import { useSession } from "@/providers/SessionProviders";
 import { Post } from "@/types/post";
@@ -20,16 +20,20 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 
 const BlogCard = ({ data }: { data: Post }) => {
   const { user } = useSession();
   const pathname = usePathname();
   const [confirmation, setConfirmation] = useState(false);
+  const router = useRouter();
   return (
     <div>
       <Card
+        onClick={() => {
+          router.push(`/blog/${data.id}`);
+        }}
         className={cn(
           "px-4 py-3 cursor-pointer text-primary-foreground bg-primary hover:bg-primary/90 w-[300px] flex flex-col aspect-[4/6] overflow-hidden rounded-md shadow-md relative",
           !data.isPublic && "bg-primary/60"
@@ -100,9 +104,10 @@ const BlogCard = ({ data }: { data: Post }) => {
         isOpen={confirmation}
         setOpen={setConfirmation}
         onConfirm={async () => {
-          await DELETEpost({
+          const res = await DELETEpost({
             id: data.id,
           });
+          responseToast({ res });
         }}
         onCancel={() => {
           setConfirmation(false);

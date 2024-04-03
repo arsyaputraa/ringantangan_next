@@ -166,7 +166,7 @@ export async function DELETEpost({ id }: { id: string }) {
     revalidatePath("/blog");
 
     return {
-      success: "Visibility toggled",
+      success: "Post Deleted",
     };
   } catch (error: any) {
     return {

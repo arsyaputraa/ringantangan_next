@@ -157,7 +157,12 @@ const CreateBlogForm = () => {
             )}
           />
 
-          <Button type="submit" variant="default" className="w-full  mt-4">
+          <Button
+            disabled={!form.formState.isDirty}
+            type="submit"
+            variant="default"
+            className="w-full  mt-4"
+          >
             SUBMIT
           </Button>
         </div>

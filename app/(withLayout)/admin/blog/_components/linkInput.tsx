@@ -23,7 +23,7 @@ const LinkInput = ({ editor }: { editor: Editor | null }) => {
 
   if (!editor) return null;
 
-  const setLink = useCallback(() => {
+  const setLink = () => {
     const url = linkInputRef.current?.value;
 
     // cancelled
@@ -40,7 +40,7 @@ const LinkInput = ({ editor }: { editor: Editor | null }) => {
 
     // update link
     editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
-  }, [editor]);
+  };
 
   return (
     <Popover open={pop} onOpenChange={setPop}>

@@ -49,7 +49,7 @@ const SignInForm = () => {
       stopCountdown();
       resetCountdown();
     }
-  }, [count]);
+  }, [count, resetCountdown, stopCountdown]);
 
   async function onSubmit(values: z.infer<typeof signInSchema>) {
     console.log(values);

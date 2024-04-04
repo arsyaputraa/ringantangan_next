@@ -37,7 +37,7 @@ const SignUpForm = () => {
       stopCountdown();
       resetCountdown();
     }
-  }, [count]);
+  }, [count, resetCountdown, stopCountdown]);
 
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),

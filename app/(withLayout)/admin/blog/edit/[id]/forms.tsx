@@ -20,6 +20,8 @@ import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import Tiptap from "../../_components/tiptap";
+import { Switch } from "@/components/ui/switch";
 
 const EditBlogForm = ({ post }: { post: Post }) => {
   const router = useRouter();
@@ -62,29 +64,18 @@ const EditBlogForm = ({ post }: { post: Post }) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col mt-4 pb-10 gap-3 items-center justify-start w-full mx-auto"
+        className="flex flex-col mt-4 pb-10 gap-3 items-center relative justify-start w-full mx-auto"
       >
-        <div className="w-full max-w-lg">
-          <h1
-            onClick={() => {
-              console.log(form.formState.errors);
-            }}
-            className="text-xl font-bold"
-          >
-            Edit a Post
-          </h1>
-          {/* <p>Last Updated : {dayjs()}</p> */}
-        </div>
+        <h1 className="text-2xl font-bold">CREATE POST</h1>
 
         <FormField
           control={form.control}
           name="title"
           render={({ field }) => (
-            <FormItem className="w-full max-w-lg">
-              <FormLabel>Title</FormLabel>
+            <FormItem className="w-full max-w-2xl">
               <FormControl>
                 <Input
-                  className="mt-2"
+                  className="mt-2 border-none focus-visible:border-none text-xl font-bold"
                   type="text"
                   placeholder="Title"
                   {...field}
@@ -96,16 +87,15 @@ const EditBlogForm = ({ post }: { post: Post }) => {
         />
         <FormField
           control={form.control}
-          name="content"
+          name="subtitle"
           render={({ field }) => (
-            <FormItem className="w-full max-w-lg">
-              <FormLabel>Content</FormLabel>
+            <FormItem className="w-full max-w-2xl">
               <FormControl>
-                <Textarea
+                <Input
+                  className="mt-2 border-none focus-visible:border-none text-lg"
+                  type="text"
+                  placeholder="subtitle"
                   {...field}
-                  id="content"
-                  className="mt-2"
-                  placeholder="hari ini ringantangan telah..."
                 />
               </FormControl>
               <FormMessage />
@@ -114,36 +104,65 @@ const EditBlogForm = ({ post }: { post: Post }) => {
         />
         <FormField
           control={form.control}
-          name="isPublic"
+          name="content"
           render={({ field }) => (
-            <FormItem className="w-full max-w-lg">
-              <FormLabel>Content</FormLabel>
+            <FormItem className="w-full max-w-2xl">
               <FormControl>
-                <div className="w-full flex justify-start items-start max-w-lg gap-1.5">
-                  <Checkbox
-                    defaultChecked
-                    id="isPublic"
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                  <Label className="" htmlFor="isPublic">
-                    Make Post Public
-                  </Label>
-                </div>
+                {/* <Textarea
+                  {...field}
+                  id="content"
+                  className="mt-2"
+                  placeholder="hari ini ringantangan telah..."
+                /> */}
+
+                <Tiptap content={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
+        <div className="w-full flex flex-col max-w-2xl justify-center  sticky bottom-3">
+          <FormField
+            control={form.control}
+            name="isPublic"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormControl>
+                  {/* <div className="w-full flex justify-start items-start max-w-lg gap-1.5 ">
+                    <Checkbox
+                      defaultChecked
+                      id="isPublic"
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                    <Label className="" htmlFor="isPublic">
+                      Make Post Public
+                    </Label>
+                  </div> */}
 
-        <Button
-          type="submit"
-          disabled={form.formState.isSubmitting || !form.formState.isDirty}
-          variant="default"
-          className="w-full max-w-lg mt-4"
-        >
-          SUBMIT
-        </Button>
+                  <div className="flex items-center space-x-2">
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                      id="public post"
+                    />
+                    <Label htmlFor="public post">Make Post Public</Label>
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <Button
+            disabled={!form.formState.isDirty}
+            type="submit"
+            variant="default"
+            className="w-full  mt-4"
+          >
+            SUBMIT
+          </Button>
+        </div>
       </form>
     </Form>
   );

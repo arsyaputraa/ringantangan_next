@@ -1,25 +1,39 @@
 "use client";
-import { POSTToggleBlogVisibility } from "@/actions/post.actions";
+import { DELETEpost, POSTToggleBlogVisibility } from "@/actions/post.actions";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import ConfirmationDialog from "@/components/ui/confirmation-dialog";
 import { Separator } from "@/components/ui/separator";
 import { validateRequest } from "@/lib/auth";
-import { getImage } from "@/lib/functions";
+import { getImage, responseToast } from "@/lib/functions";
 import { cn } from "@/lib/utils";
 import { useSession } from "@/providers/SessionProviders";
 import { Post } from "@/types/post";
 import dayjs from "dayjs";
-import { Eye, EyeOff, HeartIcon, PencilIcon, Trash2Icon } from "lucide-react";
+import {
+  Eye,
+  EyeOff,
+  HeartIcon,
+  PencilIcon,
+  Trash2Icon,
+  TrashIcon,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
 
 const BlogCard = ({ data }: { data: Post }) => {
   const { user } = useSession();
   const pathname = usePathname();
+  const [confirmation, setConfirmation] = useState(false);
+  const router = useRouter();
   return (
     <div>
       <Card
+        onClick={() => {
+          router.push(`/blog/${data.id}`);
+        }}
         className={cn(
           "px-4 py-3 cursor-pointer text-primary-foreground bg-primary hover:bg-primary/90 w-[300px] flex flex-col aspect-[4/6] overflow-hidden rounded-md shadow-md relative",
           !data.isPublic && "bg-primary/60"
@@ -36,7 +50,7 @@ const BlogCard = ({ data }: { data: Post }) => {
               console.log(pathname.split("/"));
             }}
           >
-            {data.content?.substring(0, 60)}...
+            {data?.subtitle}...
           </p>
         </div>
         <div>
@@ -54,14 +68,18 @@ const BlogCard = ({ data }: { data: Post }) => {
       {(user?.role === "admin" || user?.role === "superadmin") &&
         pathname.split("/").includes("admin") && (
           <div className="flex gap-1 justify-end items-center">
-            <Button asChild variant="ghost" className="p-3 ">
-              <Link href={`/admin/blog/edit/${data.id}`}>
-                <Trash2Icon className="w-4 h-4" />
-              </Link>
+            <Button
+              variant="ghost"
+              className="p-3"
+              onClick={() => {
+                setConfirmation(true);
+              }}
+            >
+              <TrashIcon className="w-4 h-4" />
             </Button>
             <Button
               onClick={async () => {
-                await POSTToggleBlogVisibility({
+                const res = await POSTToggleBlogVisibility({
                   id: data.id,
                   show: !data.isPublic,
                 });
@@ -82,6 +100,19 @@ const BlogCard = ({ data }: { data: Post }) => {
             </Button>
           </div>
         )}
+      <ConfirmationDialog
+        isOpen={confirmation}
+        setOpen={setConfirmation}
+        onConfirm={async () => {
+          const res = await DELETEpost({
+            id: data.id,
+          });
+          responseToast({ res });
+        }}
+        onCancel={() => {
+          setConfirmation(false);
+        }}
+      />
     </div>
   );
 };

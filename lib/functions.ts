@@ -1,6 +1,7 @@
 import shapeOne from "@/assets/images/shape_one.svg";
 import shapeTwo from "@/assets/images/shape_two.svg";
 import shapeThree from "@/assets/images/shape_three.svg";
+import { toast } from "@/components/ui/use-toast";
 
 const imageArray = [shapeOne, shapeTwo, shapeThree];
 
@@ -17,4 +18,28 @@ export const getImage = (data: string) => {
   }
 
   return imageArray[result % 3];
+};
+
+export const responseToast = ({
+  res,
+}: {
+  res: {
+    error?: string;
+    success?: string;
+  };
+}) => {
+  if (!!res.error) {
+    toast({
+      variant: "destructive",
+      description: res.error,
+      duration: 2000,
+    });
+  } else if (!!res.success) {
+    toast({
+      variant: "success",
+      duration: 2000,
+
+      description: res.success ?? "Success",
+    });
+  }
 };

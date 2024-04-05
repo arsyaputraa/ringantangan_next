@@ -87,11 +87,13 @@ const AdminTableRow = ({ admin }: { admin: UserType }) => {
               </Button>
               <Button
                 variant="ghost"
+                disabled={selectValue === admin.role}
                 onClick={() => {
                   setConfirm(true);
                 }}
+                className="disabled:text-gray-500 text-green-500"
               >
-                <CheckIcon className="w-4 h-4 text-green-500" />
+                <CheckIcon className="w-4 h-4 " />
               </Button>
             </div>
           ) : (

@@ -56,46 +56,69 @@ const AdminTableRow = ({ admin }: { admin: UserType }) => {
         <TableCell>{admin.email}</TableCell>
         <TableCell className="flex gap-1">
           {isEdit ? (
-            <div className="flex gap-1">
-              <Select
-                defaultValue={admin.role}
-                value={selectValue}
-                onValueChange={(val: RoleEnum) => {
-                  setSelectValue(val);
+            <>
+              {" "}
+              <div className="flex gap-1">
+                <Select
+                  defaultValue={admin.role}
+                  value={selectValue}
+                  onValueChange={(val: RoleEnum) => {
+                    setSelectValue(val);
+                  }}
+                >
+                  <SelectTrigger className="">
+                    <SelectValue placeholder="Role" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {selectOptions.map((item) => {
+                      return (
+                        <SelectItem value={item.value} className="uppercase">
+                          {item.name}
+                        </SelectItem>
+                      );
+                    })}
+                  </SelectContent>
+                </Select>
+                <Button
+                  variant="ghost"
+                  onClick={() => {
+                    setIsEdit(false);
+                  }}
+                >
+                  <X className="w-4 h-4 text-red-500" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  disabled={selectValue === admin.role}
+                  onClick={() => {
+                    setConfirm(true);
+                  }}
+                  className="disabled:text-gray-500 text-green-500"
+                >
+                  <CheckIcon className="w-4 h-4 " />
+                </Button>
+              </div>
+              <ConfirmationDialog
+                title={`Are you sure?`}
+                subtitle={`Changing the role of ${admin.email} to ${selectValue}`}
+                isOpen={isConfirm}
+                setOpen={setConfirm}
+                onCancel={() => setConfirm(false)}
+                onConfirm={async () => {
+                  if (selectValue === admin.role) {
+                    setConfirm(false);
+                    setIsEdit(false);
+                    return;
+                  }
+                  const res = await POSTchangeAdminRole({
+                    id: admin.id,
+                    newRole: selectValue,
+                  });
+                  responseToast({ res });
+                  return;
                 }}
-              >
-                <SelectTrigger className="">
-                  <SelectValue placeholder="Role" />
-                </SelectTrigger>
-                <SelectContent>
-                  {selectOptions.map((item) => {
-                    return (
-                      <SelectItem value={item.value} className="uppercase">
-                        {item.name}
-                      </SelectItem>
-                    );
-                  })}
-                </SelectContent>
-              </Select>
-              <Button
-                variant="ghost"
-                onClick={() => {
-                  setIsEdit(false);
-                }}
-              >
-                <X className="w-4 h-4 text-red-500" />
-              </Button>
-              <Button
-                variant="ghost"
-                disabled={selectValue === admin.role}
-                onClick={() => {
-                  setConfirm(true);
-                }}
-                className="disabled:text-gray-500 text-green-500"
-              >
-                <CheckIcon className="w-4 h-4 " />
-              </Button>
-            </div>
+              />
+            </>
           ) : (
             <span className="gap-1 flex items-center">
               <Badge className="uppercase">{admin.role}</Badge>
@@ -111,26 +134,6 @@ const AdminTableRow = ({ admin }: { admin: UserType }) => {
           )}
         </TableCell>
       </TableRow>
-      <ConfirmationDialog
-        title={`Are you sure?`}
-        subtitle={`Changing the role of ${admin.email} to ${selectValue}`}
-        isOpen={isConfirm}
-        setOpen={setConfirm}
-        onCancel={() => setConfirm(false)}
-        onConfirm={async () => {
-          if (selectValue === admin.role) {
-            setConfirm(false);
-            setIsEdit(false);
-            return;
-          }
-          const res = await POSTchangeAdminRole({
-            id: admin.id,
-            newRole: selectValue,
-          });
-          responseToast({ res });
-          return;
-        }}
-      />
     </>
   );
 };

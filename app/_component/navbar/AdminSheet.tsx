@@ -15,6 +15,7 @@ import {
   ListTreeIcon,
   LockIcon,
   RadioTowerIcon,
+  UserCheckIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -33,6 +34,11 @@ const adminSheetItem = [
     name: "CREATE ANNOUNCEMENT",
     path: "/admin/announcement/create",
     icon: <RadioTowerIcon className="mr-1" width={16} height={16} />,
+  },
+  {
+    name: "ADMIN",
+    path: "/admin/manage",
+    icon: <UserCheckIcon className="mr-1" width={16} height={16} />,
   },
 ];
 

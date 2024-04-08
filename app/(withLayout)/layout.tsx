@@ -1,5 +1,6 @@
 import React from "react";
 import Navbar from "../_component/navbar/Navbar";
+import Footer from "../_component/footer";
 
 const SharedLayout = ({
   children,
@@ -10,6 +11,7 @@ const SharedLayout = ({
     <>
       <Navbar />
       {children}
+      <Footer />
     </>
   );
 };

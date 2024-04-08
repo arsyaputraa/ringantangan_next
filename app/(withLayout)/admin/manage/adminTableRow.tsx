@@ -16,7 +16,7 @@ import { responseToast } from "@/lib/functions";
 import { useSession } from "@/providers/SessionProviders";
 import { RoleEnum, UserType } from "@/types/user";
 import { CheckIcon, PencilIcon, X } from "lucide-react";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 
 const selectOptions: { value: RoleEnum; name: string }[] = [
   {
@@ -56,8 +56,7 @@ const AdminTableRow = ({ admin }: { admin: UserType }) => {
         <TableCell>{admin.email}</TableCell>
         <TableCell className="flex gap-1">
           {isEdit ? (
-            <>
-              {" "}
+            <Fragment>
               <div className="flex gap-1">
                 <Select
                   defaultValue={admin.role}
@@ -70,9 +69,13 @@ const AdminTableRow = ({ admin }: { admin: UserType }) => {
                     <SelectValue placeholder="Role" />
                   </SelectTrigger>
                   <SelectContent>
-                    {selectOptions.map((item) => {
+                    {selectOptions.map((item, idx) => {
                       return (
-                        <SelectItem value={item.value} className="uppercase">
+                        <SelectItem
+                          key={`${item.value}-${item.name}-${idx}`}
+                          value={item.value}
+                          className="uppercase"
+                        >
                           {item.name}
                         </SelectItem>
                       );
@@ -118,7 +121,7 @@ const AdminTableRow = ({ admin }: { admin: UserType }) => {
                   return;
                 }}
               />
-            </>
+            </Fragment>
           ) : (
             <span className="gap-1 flex items-center">
               <Badge className="uppercase">{admin.role}</Badge>

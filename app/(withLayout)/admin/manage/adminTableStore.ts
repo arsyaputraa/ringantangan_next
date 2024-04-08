@@ -1,17 +1,17 @@
+import { UserType } from "@/types/user";
 import { create } from "zustand";
-import { AdminAttributes } from "./adminTable";
 
 type AdminConfirmationStore = {
-  adminSelected?: AdminAttributes;
+  adminSelected?: UserType;
   isConfirm: boolean;
-  openConfirm: (admin: AdminAttributes) => void;
+  openConfirm: (admin: UserType) => void;
   closeConfirm: () => void;
 };
 
 const useAdminConfirmationStore = create<AdminConfirmationStore>()((set) => ({
   adminSelected: undefined,
   isConfirm: false,
-  openConfirm: (admin: AdminAttributes) =>
+  openConfirm: (admin: UserType) =>
     set((state) => ({ adminSelected: admin, isConfirm: true })),
   closeConfirm: () =>
     set((state) => ({ adminSelected: undefined, isConfirm: false })),

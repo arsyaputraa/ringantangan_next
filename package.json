@@ -45,6 +45,7 @@
     "arctic": "^1.2.1",
     "argon2": "^0.40.1",
     "class-variance-authority": "^0.7.0",
+    "cloudinary": "^2.2.0",
     "clsx": "^2.1.0",
     "dayjs": "^1.11.10",
     "drizzle-orm": "^0.30.4",

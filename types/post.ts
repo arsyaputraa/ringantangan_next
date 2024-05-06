@@ -12,7 +12,10 @@ export const createPostSchema = z.object({
     .min(10)
     .max(2000, { message: "panjang maksimum 500 karakter" }),
   isPublic: z.boolean(),
+  blogImage: z.any(),
 });
+
+export type CreatePostType = z.infer<typeof createPostSchema>;
 
 export const editPostSchema = z.object({
   title: z.string().min(2).max(50, { message: "panjang maksimum 50 karakter" }),

@@ -1,6 +1,7 @@
 "use server";
 
 import { validateRequest } from "@/lib/auth";
+import cloudinary from "@/lib/cloudinary";
 import db from "@/lib/db";
 import { postTable } from "@/lib/db/schema";
 import { createPostSchema, editPostSchema, Post } from "@/types/post";
@@ -21,11 +22,14 @@ export async function POSTCreateBlog(values: z.infer<typeof createPostSchema>) {
     }
 
     const postData = {
+      blogImage: values.blogImage,
       content: values.content,
       title: values.title,
       subtitle: values.subtitle,
       isPublic: values.isPublic,
     };
+
+    console.log("data udah di server", postData);
 
     const validatedFields = createPostSchema.safeParse(postData);
 
@@ -38,6 +42,34 @@ export async function POSTCreateBlog(values: z.infer<typeof createPostSchema>) {
       });
       return {
         error: errorMessage,
+      };
+    }
+
+    const imageArray = await values.blogImage[0].arrayBuffer();
+    const imageBuffer = new Uint8Array(imageArray);
+
+    const imageUpload = await new Promise((resolve, reject) => {
+      cloudinary.uploader
+        .upload_stream(
+          {
+            upload_preset: "ringantangan_preset",
+          },
+          function (error, result) {
+            if (error) {
+              reject(error);
+              return;
+            }
+            resolve(result);
+          }
+        )
+        .end(imageBuffer);
+    });
+
+    console.log("ini image upload", imageUpload);
+
+    if (!imageUpload) {
+      return {
+        error: `Failed to upload Image`,
       };
     }
 

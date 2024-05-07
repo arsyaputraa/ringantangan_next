@@ -1,16 +1,22 @@
 "use server";
 
 import { validateRequest } from "@/lib/auth";
+import cloudinary, {
+  cloudinaryDeleteImage,
+  cloudinaryUploadImage,
+} from "@/lib/cloudinary";
 import db from "@/lib/db";
 import { postTable } from "@/lib/db/schema";
 import { createPostSchema, editPostSchema, Post } from "@/types/post";
+import { File } from "buffer";
 import dayjs from "dayjs";
 import { eq } from "drizzle-orm";
 import { generateId } from "lucia";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
-export async function POSTCreateBlog(values: z.infer<typeof createPostSchema>) {
+// export async function POSTCreateBlog(values: z.infer<typeof createPostSchema>) {
+export async function POSTCreateBlog(formData: FormData) {
   try {
     const { user } = await validateRequest();
 
@@ -21,10 +27,11 @@ export async function POSTCreateBlog(values: z.infer<typeof createPostSchema>) {
     }
 
     const postData = {
-      content: values.content,
-      title: values.title,
-      subtitle: values.subtitle,
-      isPublic: values.isPublic,
+      blogImage: formData.get("blogImage"),
+      content: JSON.parse(formData.get("content") as string),
+      title: JSON.parse(formData.get("title") as string),
+      subtitle: JSON.parse(formData.get("subtitle") as string),
+      isPublic: JSON.parse(formData.get("isPublic") as string),
     };
 
     const validatedFields = createPostSchema.safeParse(postData);
@@ -41,14 +48,30 @@ export async function POSTCreateBlog(values: z.infer<typeof createPostSchema>) {
       };
     }
 
+    const postId = generateId(16);
+    let imageUpload;
+
+    if (!!validatedFields.data.blogImage) {
+      imageUpload = await cloudinaryUploadImage({
+        fileData: validatedFields.data.blogImage,
+        id: postId,
+      });
+      if (!imageUpload) {
+        return {
+          error: `Failed to upload Image`,
+        };
+      }
+    }
+
     await db.insert(postTable).values({
       title: validatedFields.data.title,
       subtitle: validatedFields.data.subtitle,
-
+      imgUrl: !!imageUpload ? imageUpload.secure_url : "",
+      imgPublicId: !!imageUpload ? imageUpload.public_id : "",
       content: validatedFields.data.content,
       createdBy: user.email,
       isPublic: validatedFields.data.isPublic,
-      id: generateId(16),
+      id: postId,
     });
 
     revalidatePath("/blog");
@@ -161,12 +184,40 @@ export async function DELETEpost({ id }: { id: string }) {
       };
     }
 
-    await db.delete(postTable).where(eq(postTable.id, id));
+    const [deletedPost] = await db
+      .delete(postTable)
+      .where(eq(postTable.id, id))
+      .returning();
+
+    if (!!deletedPost.imgPublicId)
+      await cloudinaryDeleteImage(deletedPost.imgPublicId);
 
     revalidatePath("/blog");
 
     return {
       success: "Post Deleted",
+    };
+  } catch (error: any) {
+    return {
+      error: `${error}`,
+    };
+  }
+}
+
+export async function DELETEImage({ publicId }: { publicId: string }) {
+  try {
+    const { user } = await validateRequest();
+
+    if (!user || user.role === "user") {
+      return {
+        error: "unauthorized",
+      };
+    }
+
+    await cloudinaryDeleteImage(publicId);
+
+    return {
+      success: "Image Deleted",
     };
   } catch (error: any) {
     return {

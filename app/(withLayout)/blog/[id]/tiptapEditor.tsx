@@ -30,31 +30,45 @@ const TiptapReadonly = ({ data }: { data: Post }) => {
   });
 
   return (
-    <div className="w-full max-w-2xl  mx-auto">
-      <Card className="grid bg-gray-900 text-white grid-cols-12 place-items-stretch relative">
-        <div className="col-span-6 flex flex-col justify-between">
-          <CardHeader>
-            <CardTitle className="uppercase text-3xl font-bold">
-              {data.title}
-            </CardTitle>
-            <CardDescription className="text-md">
-              {data.subtitle}
-            </CardDescription>
-          </CardHeader>
+    <>
+      <div className="w-full max-w-2xl  mx-auto">
+        <Card className="grid bg-gray-900 text-white grid-cols-12 place-items-stretch relative">
+          <div className="col-span-6 flex flex-col justify-between">
+            <CardHeader>
+              <CardTitle className="uppercase text-3xl font-bold">
+                {data.title}
+              </CardTitle>
+              <CardDescription className="text-md">
+                {data.subtitle}
+              </CardDescription>
+            </CardHeader>
 
-          <CardFooter className="flex flex-col items-start">
-            <p className="text-sm">
-              {dayjs(new Date(data.createdDate)).format("DD MMMM YYYY")}
-            </p>
-            <p className="text-sm">{data.createdBy.split("@")[0]}</p>
-          </CardFooter>
-        </div>
-        <div className="col-span-6">
-          <Image alt="post image" src={getImage(data.id)} objectFit="" />
-        </div>
-        <BackgroundBeams />
-      </Card>
-      {/* <Card className="max-w-2xl min-h-[150px] w-full grid grid-cols-12 rounded-md px-5">
+            <CardFooter className="flex flex-col items-start">
+              <p className="text-sm">
+                {dayjs(new Date(data.createdDate)).format("DD MMMM YYYY")}
+              </p>
+              <p className="text-sm">{data.createdBy.split("@")[0]}</p>
+            </CardFooter>
+          </div>
+          <div className="col-span-6 p-5">
+            <div className="h-content rounded-md shadow-md overflow-hidden w-content">
+              <Image
+                src={!!data.imgUrl ? data.imgUrl : getImage(data.id)}
+                alt="card image"
+                width={1000}
+                height={1000}
+              />
+            </div>
+            {/* <Image
+            src={!!data.imgUrl ? data.imgUrl : getImage(data.id)}
+            alt="card image"
+            width={1000}
+            height={1000}
+          /> */}
+          </div>
+          <BackgroundBeams />
+        </Card>
+        {/* <Card className="max-w-2xl min-h-[150px] w-full grid grid-cols-12 rounded-md px-5">
         <div className="col-span-6 flex flex-col justify-between">
           <div className="">
             <h1 className="text-4xl font-bold">{data.title}</h1>
@@ -66,8 +80,9 @@ const TiptapReadonly = ({ data }: { data: Post }) => {
           </p>
         </div>
       </Card> */}
-      <EditorContent editor={editor} />
-    </div>
+        <EditorContent editor={editor} />
+      </div>
+    </>
   );
 };
 

@@ -155,7 +155,12 @@ const EditBlogForm = ({ post }: { post: Post }) => {
           />
 
           <Button
-            disabled={!form.formState.isDirty}
+            disabled={
+              form.formState.isSubmitting ||
+              form.formState.isValidating ||
+              !form.formState.isValid ||
+              !form.formState.isDirty
+            }
             type="submit"
             variant="default"
             className="w-full  mt-4"

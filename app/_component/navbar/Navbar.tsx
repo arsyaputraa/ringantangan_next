@@ -39,7 +39,7 @@ const Navbar = () => {
   const { user, session } = useSession();
   return (
     <>
-      <header className="w-full bg-background sticky top-0 left-0 mx-auto px-5 flex items-center justify-between">
+      <header className="w-full bg-background sticky top-0 z-20 left-0 mx-auto px-5 flex items-center justify-between">
         <h1 className="font-bold text-lg">Ringantangan</h1>
         <ul className="flex justify-center gap-5 py-5">
           {navbarItems.map((item, idx) => {

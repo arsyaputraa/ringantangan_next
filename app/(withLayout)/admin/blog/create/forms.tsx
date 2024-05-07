@@ -1,5 +1,5 @@
 "use client";
-import { POSTCreateBlog } from "@/actions/post.actions";
+import { DELETEImage, POSTCreateBlog } from "@/actions/post.actions";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -14,20 +14,27 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
-import { createPostSchema } from "@/types/post";
+import { CreatePostType, createPostSchema } from "@/types/post";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import Tiptap from "../_components/tiptap";
 import { Switch } from "@/components/ui/switch";
+import { ChangeEvent, useState } from "react";
+import Image from "next/image";
+import post4 from "@/assets/images/ig/post_4.jpg";
+import { Trash, XIcon } from "lucide-react";
+import { File } from "buffer";
 
 const CreateBlogForm = () => {
   const router = useRouter();
-  const form = useForm<z.infer<typeof createPostSchema>>({
+  const [imagePreview, setImagePreview] = useState("");
+  const form = useForm<CreatePostType>({
     reValidateMode: "onBlur",
     resolver: zodResolver(createPostSchema),
     defaultValues: {
+      blogImage: {} as File,
       title: "Change this with your title",
       subtitle: "change this with your subtitle...",
       content: "<p>start writing here...</p>",
@@ -35,8 +42,18 @@ const CreateBlogForm = () => {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof createPostSchema>) {
-    const res = await POSTCreateBlog(values);
+  async function onSubmit(values: CreatePostType) {
+    const formData = new FormData();
+
+    for (const [key, value] of Object.entries(values)) {
+      if (key === "blogImage") {
+        formData.append(key, value);
+      } else {
+        formData.append(key, JSON.stringify(value));
+      }
+    }
+
+    const res = await POSTCreateBlog(formData);
 
     if (!!res.error) {
       return toast({
@@ -70,7 +87,64 @@ const CreateBlogForm = () => {
         className="flex flex-col mt-4 pb-10 gap-3 items-center relative justify-start w-full mx-auto"
       >
         <h1 className="text-2xl font-bold">CREATE POST</h1>
-
+        <FormField
+          control={form.control}
+          name="blogImage"
+          render={({ field: { value, onChange, ...fieldProps } }) => (
+            <FormItem className="w-full flex flex-col justify-center items-center font-semibold space-around max-w-2xl">
+              <FormControl>
+                <div className="flex w-full items-center  justify-center">
+                  <Input
+                    {...fieldProps}
+                    id="blogImageInput"
+                    className="border-none cursor-pointer  focus-visible:border-none"
+                    type="file"
+                    accept="image/png, image/jpg, image/jpeg, image/webp"
+                    placeholder="blog image"
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                      try {
+                        if (!!e.target.files) {
+                          setImagePreview(
+                            URL?.createObjectURL(e.target.files[0])
+                          );
+                          form.setValue("blogImage", e.target.files[0]);
+                        }
+                      } catch (error) {
+                        form.setValue("blogImage", {} as File);
+                        setImagePreview("");
+                      }
+                    }}
+                  />
+                  {!!imagePreview && (
+                    <Button
+                      size="icon"
+                      variant="ghost"
+                      className="text-red-400"
+                      type="button"
+                      onClick={() => {
+                        form.setValue("blogImage", {} as File);
+                        setImagePreview("");
+                      }}
+                    >
+                      <Trash className="h-4 w-4" />
+                    </Button>
+                  )}
+                </div>
+              </FormControl>
+              {!!imagePreview && (
+                <>
+                  <Image
+                    src={imagePreview}
+                    alt="blog image"
+                    width={300}
+                    height={300}
+                  />
+                </>
+              )}
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="title"
@@ -124,7 +198,7 @@ const CreateBlogForm = () => {
             </FormItem>
           )}
         />
-        <div className="w-full flex flex-col max-w-2xl justify-center  sticky bottom-3">
+        <div className="w-full flex flex-col max-w-2xl justify-center">
           <FormField
             control={form.control}
             name="isPublic"
@@ -147,9 +221,9 @@ const CreateBlogForm = () => {
                     <Switch
                       checked={field.value}
                       onCheckedChange={field.onChange}
-                      id="public post"
+                      id="public_post"
                     />
-                    <Label htmlFor="public post">Make Post Public</Label>
+                    <Label htmlFor="public_post">Make Post Public</Label>
                   </div>
                 </FormControl>
                 <FormMessage />
@@ -158,7 +232,12 @@ const CreateBlogForm = () => {
           />
 
           <Button
-            disabled={!form.formState.isDirty}
+            disabled={
+              form.formState.isSubmitting ||
+              form.formState.isValidating ||
+              !form.formState.isValid ||
+              !form.formState.isDirty
+            }
             type="submit"
             variant="default"
             className="w-full  mt-4"

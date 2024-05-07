@@ -1,5 +1,5 @@
 "use client";
-import { POSTCreateBlog } from "@/actions/post.actions";
+import { DELETEImage, POSTCreateBlog } from "@/actions/post.actions";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -34,7 +34,7 @@ const CreateBlogForm = () => {
     reValidateMode: "onBlur",
     resolver: zodResolver(createPostSchema),
     defaultValues: {
-      blogImage: [] as File[],
+      blogImage: {} as File,
       title: "Change this with your title",
       subtitle: "change this with your subtitle...",
       content: "<p>start writing here...</p>",
@@ -43,7 +43,17 @@ const CreateBlogForm = () => {
   });
 
   async function onSubmit(values: CreatePostType) {
-    const res = await POSTCreateBlog(values);
+    const formData = new FormData();
+
+    for (const [key, value] of Object.entries(values)) {
+      if (key === "blogImage") {
+        formData.append(key, value);
+      } else {
+        formData.append(key, JSON.stringify(value));
+      }
+    }
+
+    const res = await POSTCreateBlog(formData);
 
     if (!!res.error) {
       return toast({
@@ -97,10 +107,10 @@ const CreateBlogForm = () => {
                           setImagePreview(
                             URL?.createObjectURL(e.target.files[0])
                           );
-                          form.setValue("blogImage", e.target.files);
+                          form.setValue("blogImage", e.target.files[0]);
                         }
                       } catch (error) {
-                        form.setValue("blogImage", [] as File[]);
+                        form.setValue("blogImage", {} as File);
                         setImagePreview("");
                       }
                     }}
@@ -112,7 +122,7 @@ const CreateBlogForm = () => {
                       className="text-red-400"
                       type="button"
                       onClick={() => {
-                        form.setValue("blogImage", [] as File[]);
+                        form.setValue("blogImage", {} as File);
                         setImagePreview("");
                       }}
                     >
@@ -222,7 +232,12 @@ const CreateBlogForm = () => {
           />
 
           <Button
-            disabled={!form.formState.isDirty}
+            disabled={
+              form.formState.isSubmitting ||
+              form.formState.isValidating ||
+              !form.formState.isValid ||
+              !form.formState.isDirty
+            }
             type="submit"
             variant="default"
             className="w-full  mt-4"

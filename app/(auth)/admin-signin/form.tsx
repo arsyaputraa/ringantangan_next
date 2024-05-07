@@ -93,7 +93,16 @@ const AdminLoginForm = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit">Submit</Button>
+            <Button
+              disabled={
+                form.formState.isSubmitting ||
+                form.formState.isValidating ||
+                !form.formState.isValid
+              }
+              type="submit"
+            >
+              Submit
+            </Button>
           </form>
         </Form>
       </Card>

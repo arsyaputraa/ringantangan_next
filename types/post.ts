@@ -10,7 +10,7 @@ export const createPostSchema = z.object({
   content: z
     .string()
     .min(10)
-    .max(2000, { message: "panjang maksimum 500 karakter" }),
+    .max(4000, { message: "panjang maksimum 4000 karakter" }),
   isPublic: z.boolean(),
   blogImage: z.any(),
 });
@@ -26,7 +26,7 @@ export const editPostSchema = z.object({
   content: z
     .string()
     .min(10)
-    .max(2000, { message: "panjang maksimum 500 karakter" }),
+    .max(4000, { message: "panjang maksimum 4000 karakter" }),
   isPublic: z.boolean(),
 });
 
@@ -36,6 +36,8 @@ export interface Post {
   updatedBy?: string;
   title: string;
   subtitle?: string;
+  imgUrl?: string;
+  imgPublicId?: string;
   content?: string;
   picture?: string;
   createdDate: string;

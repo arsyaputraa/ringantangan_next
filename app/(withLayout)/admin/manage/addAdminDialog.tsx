@@ -84,7 +84,16 @@ export function AddAdminDialog() {
               />
             </div>
             <DialogFooter>
-              <Button type="submit">ADD</Button>
+              <Button
+                disabled={
+                  form.formState.isSubmitting ||
+                  form.formState.isValidating ||
+                  !form.formState.isValid
+                }
+                type="submit"
+              >
+                ADD
+              </Button>
             </DialogFooter>
           </form>
         </Form>

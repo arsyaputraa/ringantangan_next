@@ -8,6 +8,8 @@ import {
 } from "drizzle-orm/pg-core";
 import { userTable } from "./userSchema";
 
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
+
 export const postTable = pgTable("post", {
   id: text("id").primaryKey(),
   createdBy: text("created_by")
@@ -17,7 +19,8 @@ export const postTable = pgTable("post", {
   title: text("title").notNull(),
   subtitle: text("subtitle"),
   content: text("content"),
-  picture: text("picture"),
+  imgUrl: text("img_url"),
+  imgPublicId: text("img_public_id"),
   createdDate: timestamp("created_date", {
     withTimezone: true,
     mode: "string",

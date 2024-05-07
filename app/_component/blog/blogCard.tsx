@@ -39,8 +39,15 @@ const BlogCard = ({ data }: { data: Post }) => {
           !data.isPublic && "bg-primary/60"
         )}
       >
-        <div className="flex-1">
-          <Image src={getImage(data.id)} alt="card image" />
+        <div className="flex-1 p-3">
+          <div className="h-content rounded-md shadow-md overflow-hidden w-content">
+            <Image
+              src={!!data.imgUrl ? data.imgUrl : getImage(data.id)}
+              alt="card image"
+              width={1000}
+              height={1000}
+            />
+          </div>
         </div>
         <div className="overflow-hidden">
           <h3 className="text-xl font-bold ">{data.title}</h3>

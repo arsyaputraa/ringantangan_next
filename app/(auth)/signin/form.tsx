@@ -110,7 +110,7 @@ const SignInForm = () => {
         <Button type="button" className="mb-5" onClick={handleGoogleLogin}>
           Sign in with Google
         </Button>
-        <Form {...form}>
+        {/* <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
             <FormField
               control={form.control}
@@ -141,10 +141,19 @@ const SignInForm = () => {
               )}
             />
 
-            <Button type="submit">Submit</Button>
+            <Button
+              disabled={
+                form.formState.isSubmitting ||
+                form.formState.isValidating ||
+                !form.formState.isValid
+              }
+              type="submit"
+            >
+              Submit
+            </Button>
           </form>
-        </Form>
-        {showResendEmailVerification && (
+        </Form> */}
+        {/* {showResendEmailVerification && (
           <Button
             disabled={count > 0 && count < 60}
             variant="link"
@@ -152,7 +161,7 @@ const SignInForm = () => {
           >
             Resend email verification {count > 0 && count < 60 && count}
           </Button>
-        )}
+        )} */}
       </Card>
     </div>
   );

@@ -11,7 +11,7 @@ import post4 from "@/assets/images/ig/post_4.jpg";
 import post5 from "@/assets/images/ig/post_5.webp";
 import { TypewriterCTA } from "./_components/typewriter-cta";
 
-export const posts = [
+const dummyPosts = [
   {
     title: "Love Donation",
     link: "https://www.instagram.com/p/ClTZhL-ynD2/",
@@ -105,7 +105,7 @@ export const posts = [
 export default async function Home() {
   return (
     <>
-      <HeroParallax posts={posts} />
+      <HeroParallax posts={dummyPosts} />
       <TypewriterCTA />
     </>
   );

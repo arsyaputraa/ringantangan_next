@@ -47,11 +47,17 @@ export async function POSTCreateBlog(formData: FormData) {
         error: errorMessage,
       };
     }
+    // console.log(typeof validatedFields.data.blogImage === "string");
+    // console.log("key", Object.keys(validatedFields.data.blogImage));
+    // console.log("value", Object.values(validatedFields.data.blogImage));
 
     const postId = generateId(16);
     let imageUpload;
 
-    if (!!validatedFields.data.blogImage) {
+    if (
+      !!validatedFields.data.blogImage &&
+      !!(typeof validatedFields.data.blogImage !== "string")
+    ) {
       imageUpload = await cloudinaryUploadImage({
         fileData: validatedFields.data.blogImage,
         id: postId,
@@ -189,7 +195,7 @@ export async function DELETEpost({ id }: { id: string }) {
       .where(eq(postTable.id, id))
       .returning();
 
-    if (!!deletedPost.imgPublicId)
+    if (!!deletedPost?.imgPublicId)
       await cloudinaryDeleteImage(deletedPost.imgPublicId);
 
     revalidatePath("/blog");

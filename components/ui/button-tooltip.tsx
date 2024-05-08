@@ -40,7 +40,7 @@ const TooltipButton = ({
   const Comp = asChild ? Slot : Button;
   return (
     <TooltipProvider>
-      <Tooltip sideOffset={sideOffset}>
+      <Tooltip>
         <TooltipTrigger asChild>
           <Comp
             {...props}
@@ -50,7 +50,7 @@ const TooltipButton = ({
             {children}
           </Comp>
         </TooltipTrigger>
-        <TooltipContent className={tooltipClassName}>
+        <TooltipContent sideOffset={sideOffset} className={tooltipClassName}>
           {tooltipContent}
         </TooltipContent>
       </Tooltip>

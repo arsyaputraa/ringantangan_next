@@ -44,11 +44,14 @@ const adminSheetItem = [
 
 const AdminSheet = () => {
   const pathname = usePathname();
-  console.log(pathname);
+
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button className="" variant="ghost">
+        <Button
+          className=""
+          variant={pathname.split("/")[1] === "admin" ? "outline" : "ghost"}
+        >
           <LockIcon className="mr-1" width={16} height={16} />
           ADMIN
         </Button>

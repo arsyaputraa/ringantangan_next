@@ -1,10 +1,8 @@
 "use client";
 import { DELETEpost, POSTToggleBlogVisibility } from "@/actions/post.actions";
 import { Button } from "@/components/ui/button";
-import TooltipButton from "@/components/ui/button-tooltip";
 import { Card } from "@/components/ui/card";
 import ConfirmationDialog from "@/components/ui/confirmation-dialog";
-import { Popover } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
 import { validateRequest } from "@/lib/auth";
 import { getImage, responseToast } from "@/lib/functions";
@@ -32,55 +30,53 @@ const BlogCard = ({ data }: { data: Post }) => {
   const router = useRouter();
   return (
     <div>
-      <article className="flex rounded-sm bg-white transition shadow-md hover:shadow-xl">
-        <div className="rotate-180 p-2 [writing-mode:_vertical-lr]">
-          <time
-            dateTime={data.createdDate}
-            className="flex items-center justify-between gap-4 text-xs font-bold uppercase text-gray-900"
+      <Card
+        onClick={() => {
+          router.push(`/blog/${data.id}`);
+        }}
+        className={cn(
+          "px-4 py-3 cursor-pointer text-primary-foreground bg-primary hover:bg-primary/90 w-[300px] flex flex-col aspect-[4/6] overflow-hidden rounded-md shadow-md relative",
+          !data.isPublic && "bg-primary/60"
+        )}
+      >
+        <div className="flex-1 p-3">
+          <div className="h-content rounded-md shadow-md overflow-hidden w-content">
+            <Image
+              src={!!data.imgUrl ? data.imgUrl : getImage(data.id)}
+              alt="card image"
+              className="object-contain"
+              width={1000}
+              height={1000}
+            />
+          </div>
+        </div>
+        <div className="overflow-hidden">
+          <h3 className="text-xl font-bold ">{data.title}</h3>
+
+          <p
+            onClick={() => {
+              console.log(pathname.split("/"));
+            }}
           >
-            <span>{dayjs(data.createdDate).format("YYYY")}</span>
-            <span className="w-px flex-1 bg-gray-900/10"></span>
-            <span>{dayjs(data.createdDate).format("MMM DD")}</span>
-          </time>
+            {data?.subtitle}...
+          </p>
         </div>
-
-        <div className="hidden sm:block sm:basis-56">
-          <Image
-            alt="card image"
-            src={!!data.imgUrl ? data.imgUrl : getImage(data.id)}
-            className="aspect-square h-full w-full object-contain"
-            width={1000}
-            height={1000}
-          />
-        </div>
-
-        <div className="flex flex-1 flex-col justify-between">
-          <div className="border-s border-gray-900/10 p-4 sm:border-l-transparent sm:p-6">
-            <h3 className="font-bold uppercase text-gray-900">{data.title}</h3>
-
-            <p className="mt-2 line-clamp-3 text-sm/relaxed text-gray-700">
-              {data.subtitle ?? "..."}
+        <div>
+          <Separator className="my-2" />
+          <div className="text-sm flex justify-between">
+            <p className="text-primary-foreground/70">
+              {dayjs(new Date(data.createdDate)).format("DD MMM YYYY")}
             </p>
-          </div>
-
-          <div className="sm:flex sm:items-end sm:justify-end">
-            <Button
-              onClick={() => {
-                router.push(`/blog/${data.id}`);
-              }}
-              className="block bg-primary rounded-none px-5 py-3 text-center text-xs font-bold uppercase text-white transition hover:bg-gray-700"
-            >
-              Read Blog
-            </Button>
+            <span className="flex items-center justify-center gap-1">
+              <HeartIcon color="red" width={15} height={15} /> {data.likeCount}
+            </span>
           </div>
         </div>
-      </article>
-
+      </Card>
       {(user?.role === "admin" || user?.role === "superadmin") &&
         pathname.split("/").includes("admin") && (
           <div className="flex gap-1 justify-end items-center">
-            <TooltipButton
-              tooltipContent="Delete Post"
+            <Button
               variant="ghost"
               className="p-3"
               onClick={() => {
@@ -88,9 +84,8 @@ const BlogCard = ({ data }: { data: Post }) => {
               }}
             >
               <TrashIcon className="w-4 h-4" />
-            </TooltipButton>
-            <TooltipButton
-              tooltipContent={data.isPublic ? "Hide Post" : "Show Post"}
+            </Button>
+            <Button
               onClick={async () => {
                 const res = await POSTToggleBlogVisibility({
                   id: data.id,
@@ -98,25 +93,19 @@ const BlogCard = ({ data }: { data: Post }) => {
                 });
               }}
               variant="ghost"
-              className={cn("p-3")}
+              className="p-3 "
             >
               {data.isPublic ? (
                 <EyeOff className="w-4 h-4" />
               ) : (
-                <Eye className="w-4 h-4 text-blue-500" />
+                <Eye className="w-4 h-4" />
               )}
-            </TooltipButton>
-
-            <TooltipButton
-              tooltipContent={"Edit post"}
-              asChild
-              variant="ghost"
-              className="p-3 "
-            >
+            </Button>
+            <Button asChild variant="ghost" className="p-3 ">
               <Link href={`/admin/blog/edit/${data.id}`}>
                 <PencilIcon className="w-4 h-4" />
               </Link>
-            </TooltipButton>
+            </Button>
           </div>
         )}
       <ConfirmationDialog

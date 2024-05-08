@@ -14,91 +14,82 @@ import { TypewriterCTA } from "./_components/typewriter-cta";
 const dummyPosts = [
   {
     title: "Love Donation",
-    link: "https://www.instagram.com/p/ClTZhL-ynD2/",
+    link: "#",
     thumbnail: post1,
   },
   {
     title: "Ringantangan X Permata Jonggol",
-    link: "https://cursor.so",
+    link: "#",
     thumbnail: post2,
   },
   {
     title: "Nostalgia Ramadhan",
-    link: "https://userogue.com",
+    link: "#",
     thumbnail: post3,
   },
 
   {
     title: "Lentera Ramadhan",
-    link: "https://editorially.org",
+    link: "#",
     thumbnail: post4,
   },
   {
     title: "Ringantangan X JTown Festival",
-    link: "https://editrix.ai",
+    link: "#",
     thumbnail: post5,
   },
+
   {
-    title: "Pixel Perfect",
-    link: "https://app.pixelperfect.quest",
-    thumbnail:
-      "https://aceternity.com/images/products/thumbnails/new/pixelperfect.png",
+    title: "Ringantangan X JTown Festival",
+    link: "#",
+    thumbnail: post5,
   },
 
   {
-    title: "Algochurn",
-    link: "https://algochurn.com",
-    thumbnail:
-      "https://aceternity.com/images/products/thumbnails/new/algochurn.png",
+    title: "Lentera Ramadhan",
+    link: "#",
+    thumbnail: post4,
   },
   {
-    title: "Aceternity UI",
-    link: "https://ui.aceternity.com",
-    thumbnail:
-      "https://aceternity.com/images/products/thumbnails/new/aceternityui.png",
+    title: "Nostalgia Ramadhan",
+    link: "#",
+    thumbnail: post3,
   },
   {
-    title: "Tailwind Master Kit",
-    link: "https://tailwindmasterkit.com",
-    thumbnail:
-      "https://aceternity.com/images/products/thumbnails/new/tailwindmasterkit.png",
+    title: "Ringantangan X Permata Jonggol",
+    link: "#",
+    thumbnail: post2,
   },
   {
-    title: "SmartBridge",
-    link: "https://smartbridgetech.com",
-    thumbnail:
-      "https://aceternity.com/images/products/thumbnails/new/smartbridge.png",
+    title: "Love Donation",
+    link: "#",
+    thumbnail: post1,
   },
   {
-    title: "Renderwork Studio",
-    link: "https://renderwork.studio",
-    thumbnail:
-      "https://aceternity.com/images/products/thumbnails/new/renderwork.png",
+    title: "Nostalgia Ramadhan",
+    link: "#",
+    thumbnail: post3,
+  },
+  {
+    title: "Lentera Ramadhan",
+    link: "#",
+    thumbnail: post4,
+  },
+  {
+    title: "Love Donation",
+    link: "#",
+    thumbnail: post1,
+  },
+  {
+    title: "Ringantangan X Permata Jonggol",
+    link: "#",
+    thumbnail: post2,
   },
 
   {
-    title: "Creme Digital",
-    link: "https://cremedigital.com",
-    thumbnail:
-      "https://aceternity.com/images/products/thumbnails/new/cremedigital.png",
-  },
-  {
-    title: "Golden Bells Academy",
-    link: "https://goldenbellsacademy.com",
-    thumbnail:
-      "https://aceternity.com/images/products/thumbnails/new/goldenbellsacademy.png",
-  },
-  {
-    title: "Invoker Labs",
-    link: "https://invoker.lol",
-    thumbnail:
-      "https://aceternity.com/images/products/thumbnails/new/invoker.png",
-  },
-  {
-    title: "E Free Invoice",
-    link: "https://efreeinvoice.com",
-    thumbnail:
-      "https://aceternity.com/images/products/thumbnails/new/efreeinvoice.png",
+    title: "Ringantangan X JTown Festival",
+    link: "#",
+    thumbnail: post5,
   },
 ];
 

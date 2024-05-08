@@ -43,7 +43,7 @@ const Navbar = () => {
         <h1 className="font-bold text-lg">Ringantangan</h1>
         <ul className="flex justify-center gap-5 py-5">
           {navbarItems.map((item, idx) => {
-            const isActive = `/${pathname.split("/").at(-1)}` === item.url;
+            const isActive = pathname === item.url;
             return (
               <li key={`${item.name}-${idx}`}>
                 <Button

@@ -10,7 +10,8 @@ const SharedLayout = ({
   return (
     <>
       <Navbar />
-      {children}
+      <main className="min-h-[calc(100vh-150px)]">{children}</main>
+
       <Footer />
     </>
   );

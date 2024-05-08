@@ -39,7 +39,7 @@ const AdminLoginForm = () => {
           width={250}
           height={250}
           alt="login logo"
-          className="self-center"
+          className="self-center "
           src={MainLogo}
         />
         <h1 className="text-2xl text-secondary-forefround font-bold text-center mb-5">

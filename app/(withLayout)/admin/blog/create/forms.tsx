@@ -136,6 +136,7 @@ const CreateBlogForm = () => {
                   <Image
                     src={imagePreview}
                     alt="blog image"
+                    className="object-contain"
                     width={300}
                     height={300}
                   />

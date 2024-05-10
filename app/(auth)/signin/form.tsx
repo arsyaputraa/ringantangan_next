@@ -52,7 +52,6 @@ const SignInForm = () => {
   }, [count, resetCountdown, stopCountdown]);
 
   async function onSubmit(values: z.infer<typeof signInSchema>) {
-    console.log(values);
     const res = await signIn(values);
     if (res.error) {
       toast({
@@ -86,13 +85,11 @@ const SignInForm = () => {
   }
 
   const handleGoogleLogin = async () => {
-    console.log("this button pressed");
     const res = await createGoogleAuthorizationURL();
-    console.log("this is resss", res);
     if (res.error) {
       toast({ variant: "destructive", description: res.error });
     } else if (res.success) {
-      router.replace(res.data.toString());
+      router.replace(res.data);
     }
   };
 

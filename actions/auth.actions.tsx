@@ -16,8 +16,6 @@ import { cookies } from "next/headers";
 import { z } from "zod";
 
 export const signUp = async (values: z.infer<typeof signUpSchema>) => {
-  console.log(values);
-
   const hashedPassword = await argon2.hash(values.password);
   const userId = generateId(15);
   try {
@@ -244,7 +242,7 @@ export const createGoogleAuthorizationURL = async () => {
 
     return {
       success: true,
-      data: authorizationURL,
+      data: authorizationURL.toString(),
     };
   } catch (error: any) {
     return { error: error?.message };

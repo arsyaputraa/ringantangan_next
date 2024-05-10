@@ -53,13 +53,7 @@ const BlogCard = ({ data }: { data: Post }) => {
         <div className="overflow-hidden">
           <h3 className="text-xl font-bold ">{data.title}</h3>
 
-          <p
-            onClick={() => {
-              console.log(pathname.split("/"));
-            }}
-          >
-            {data?.subtitle}...
-          </p>
+          <p>{data?.subtitle}...</p>
         </div>
         <div>
           <Separator className="my-2" />

@@ -128,7 +128,6 @@ export async function POSTEditBlog(formData: FormData) {
     const postId = formData.get("id") as string;
     const imgPublicId = formData.get("imgPublicId") as string;
 
-    console.log(postId, imgPublicId);
     let imageUpload;
     if (
       !!validatedFields.data.blogImage &&

@@ -82,14 +82,7 @@ const EditBlogForm = ({ post }: { post: Post }) => {
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col mt-4 pb-10 gap-3 items-center relative justify-start w-full mx-auto"
       >
-        <h1
-          className="text-2xl font-bold"
-          onClick={() => {
-            console.log(form.getValues());
-          }}
-        >
-          EDIT POST
-        </h1>
+        <h1 className="text-2xl font-bold">EDIT POST</h1>
         <FormField
           control={form.control}
           name="blogImage"

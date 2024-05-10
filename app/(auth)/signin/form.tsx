@@ -87,6 +87,7 @@ const SignInForm = () => {
 
   const handleGoogleLogin = async () => {
     const res = await createGoogleAuthorizationURL();
+    console.log("this is resss", res);
     if (res.error) {
       toast({ variant: "destructive", description: res.error });
     } else if (res.success) {

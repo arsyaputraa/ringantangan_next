@@ -7,7 +7,7 @@ const AdminBlogPage = async () => {
 
   if (posts.length > 0)
     return (
-      <div className="w-full mx-auto p-5 grid grid-cols-3 gap-5 place-items-center">
+      <div className="w-full p-5 md:p-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:gap-5 md:place-items-center">
         {posts.map((post) => (
           <BlogCard key={post.id} data={post} />
         ))}

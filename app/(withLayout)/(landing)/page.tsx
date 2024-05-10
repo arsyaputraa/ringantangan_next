@@ -14,81 +14,81 @@ import { TypewriterCTA } from "./_components/typewriter-cta";
 const dummyPosts = [
   {
     title: "Love Donation",
-    link: "#",
+    link: "https://www.instagram.com/_ringantangan/?hl=en",
     thumbnail: post1,
   },
   {
     title: "Ringantangan X Permata Jonggol",
-    link: "#",
+    link: "https://www.instagram.com/_ringantangan/?hl=en",
     thumbnail: post2,
   },
   {
     title: "Nostalgia Ramadhan",
-    link: "#",
+    link: "https://www.instagram.com/_ringantangan/?hl=en",
     thumbnail: post3,
   },
 
   {
     title: "Lentera Ramadhan",
-    link: "#",
+    link: "https://www.instagram.com/_ringantangan/?hl=en",
     thumbnail: post4,
   },
   {
     title: "Ringantangan X JTown Festival",
-    link: "#",
+    link: "https://www.instagram.com/_ringantangan/?hl=en",
     thumbnail: post5,
   },
 
   {
     title: "Ringantangan X JTown Festival",
-    link: "#",
+    link: "https://www.instagram.com/_ringantangan/?hl=en",
     thumbnail: post5,
   },
 
   {
     title: "Lentera Ramadhan",
-    link: "#",
+    link: "https://www.instagram.com/_ringantangan/?hl=en",
     thumbnail: post4,
   },
   {
     title: "Nostalgia Ramadhan",
-    link: "#",
+    link: "https://www.instagram.com/_ringantangan/?hl=en",
     thumbnail: post3,
   },
   {
     title: "Ringantangan X Permata Jonggol",
-    link: "#",
+    link: "https://www.instagram.com/_ringantangan/?hl=en",
     thumbnail: post2,
   },
   {
     title: "Love Donation",
-    link: "#",
+    link: "https://www.instagram.com/_ringantangan/?hl=en",
     thumbnail: post1,
   },
   {
     title: "Nostalgia Ramadhan",
-    link: "#",
+    link: "https://www.instagram.com/_ringantangan/?hl=en",
     thumbnail: post3,
   },
   {
     title: "Lentera Ramadhan",
-    link: "#",
+    link: "https://www.instagram.com/_ringantangan/?hl=en",
     thumbnail: post4,
   },
   {
     title: "Love Donation",
-    link: "#",
+    link: "https://www.instagram.com/_ringantangan/?hl=en",
     thumbnail: post1,
   },
   {
     title: "Ringantangan X Permata Jonggol",
-    link: "#",
+    link: "https://www.instagram.com/_ringantangan/?hl=en",
     thumbnail: post2,
   },
 
   {
     title: "Ringantangan X JTown Festival",
-    link: "#",
+    link: "https://www.instagram.com/_ringantangan/?hl=en",
     thumbnail: post5,
   },
 ];

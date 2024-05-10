@@ -96,7 +96,7 @@ const SignInForm = () => {
 
   return (
     <div className="flex items-center justify-center h-screen w-full">
-      <Card className="bg-secondary flex flex-col px-10 w-2/6 py-5 ">
+      <Card className="bg-secondary flex flex-col px-10 w-full md:w-2/6 py-5 ">
         <Image
           width={250}
           height={250}

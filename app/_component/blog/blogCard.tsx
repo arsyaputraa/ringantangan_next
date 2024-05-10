@@ -55,6 +55,15 @@ const BlogCard = ({ data }: { data: Post }) => {
         </div>
 
         <div className="flex flex-1 flex-col justify-between">
+          <div className="sm:hidden">
+            <Image
+              alt="card image"
+              src={!!data.imgUrl ? data.imgUrl : getImage(data.id)}
+              className="aspect-square h-full w-full object-contain"
+              width={1000}
+              height={1000}
+            />
+          </div>
           <div className="border-s border-gray-900/10 p-4 sm:border-l-transparent sm:p-6">
             <h3 className="font-bold uppercase text-gray-900">{data.title}</h3>
 
@@ -63,7 +72,7 @@ const BlogCard = ({ data }: { data: Post }) => {
             </p>
           </div>
 
-          <div className="sm:flex sm:items-end sm:justify-end">
+          <div className="flex items-end justify-end">
             <Button
               onClick={() => {
                 router.push(`/blog/${data.id}`);

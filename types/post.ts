@@ -28,6 +28,9 @@ export const editPostSchema = z.object({
     .min(10)
     .max(4000, { message: "panjang maksimum 4000 karakter" }),
   isPublic: z.boolean(),
+  blogImage: z.any(),
+  isDeleteImage: z.boolean(),
+  id: z.string(),
 });
 
 export interface Post {

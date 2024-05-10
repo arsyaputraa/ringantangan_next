@@ -17,7 +17,7 @@ const ManageAdminPage = async () => {
     <div className="w-full mx-auto min-h-[calc(100vh-100px)] flex flex-col items-center">
       <h1 className="text-xl font-bold">MANAGE ADMIN</h1>
       <div className="max-w-2xl w-full mt-5 relative">
-        <div className="flex justify-end py-2">
+        <div className="flex justify-end px-2 md:px-0 py-2">
           <AddAdminDialog />
         </div>
 

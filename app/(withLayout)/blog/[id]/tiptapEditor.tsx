@@ -45,10 +45,10 @@ const TiptapReadonly = ({ data }: { data: Post }) => {
           </div>
           <div className="col-span-5 flex flex-col justify-center">
             <CardHeader>
-              <CardTitle className="uppercase text-3xl font-bold">
+              <CardTitle className="uppercase md:text-3xl font-bold">
                 {data.title}
               </CardTitle>
-              <CardDescription className="text-lg text-gray-300">
+              <CardDescription className="md:text-lg text-gray-300">
                 {data.subtitle}
               </CardDescription>
             </CardHeader>

@@ -86,6 +86,7 @@ const SignInForm = () => {
   }
 
   const handleGoogleLogin = async () => {
+    console.log("this button pressed");
     const res = await createGoogleAuthorizationURL();
     console.log("this is resss", res);
     if (res.error) {

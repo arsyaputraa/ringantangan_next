@@ -2,6 +2,7 @@
 
 import { POSTaddAdmin } from "@/actions/admin.actions";
 import { Button } from "@/components/ui/button";
+import TooltipButton from "@/components/ui/button-tooltip";
 import {
   Dialog,
   DialogContent,
@@ -49,10 +50,12 @@ export function AddAdminDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger className="" asChild>
-        <Button onClick={() => [setOpen(true)]}>
+        <TooltipButton
+          tooltipContent="ADD ADMIN"
+          onClick={() => [setOpen(true)]}
+        >
           <PlusIcon className="mr-1 w-4 h-4" />
-          ADD NEW ADMIN
-        </Button>
+        </TooltipButton>
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-[425px]">

@@ -9,10 +9,11 @@ cloudinary.config({
 
 export async function cloudinaryUploadImage({
   fileData,
-  id,
+
+  publicId,
 }: {
   fileData: File;
-  id?: string;
+  publicId?: string;
 }) {
   try {
     const imageArray = await fileData.arrayBuffer();
@@ -22,11 +23,7 @@ export async function cloudinaryUploadImage({
       cloudinary.uploader
         .upload_stream(
           {
-            public_id: !!id
-              ? `${id}_${new Date().toISOString()}`
-              : `${
-                  fileData.name && fileData.name.split(".")[0]
-                }_${new Date().toISOString()}`,
+            public_id: publicId,
             upload_preset: "ringantangan_preset",
           },
           function (error, result) {

@@ -19,7 +19,8 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-const adminSheetItem = [
+
+export const adminSheetItem = [
   {
     name: "MANAGE POST",
     path: "/admin/blog",

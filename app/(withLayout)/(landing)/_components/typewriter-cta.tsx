@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { motion, stagger, useAnimate, useInView } from "framer-motion";
+import { InstagramIcon } from "lucide-react";
 import Link from "next/link";
 import { useEffect } from "react";
 
@@ -158,7 +159,7 @@ export const TypewriterEffectSmooth = ({
         }}
       >
         <div
-          className="text-xs sm:text-base md:text-xl lg:text:3xl xl:text-5xl font-bold"
+          className="sm:text-base md:text-xl lg:text:3xl xl:text-5xl font-bold"
           style={{
             whiteSpace: "nowrap",
           }}
@@ -215,8 +216,10 @@ export function TypewriterCTA() {
         <Button asChild>
           <Link href="/blog">Baca Blog</Link>
         </Button>
-        <Button variant="outline" className="outli" asChild>
-          <Link href="/blog">Instagram Ringantangan</Link>
+        <Button variant="outline" asChild>
+          <Link target="_blank" href="https://www.instagram.com/_ringantangan/">
+            @_ringantangan
+          </Link>
         </Button>
       </div>
     </div>

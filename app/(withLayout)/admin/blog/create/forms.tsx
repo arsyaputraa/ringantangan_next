@@ -49,7 +49,7 @@ const CreateBlogForm = () => {
       if (key === "blogImage") {
         formData.append(key, value);
       } else {
-        formData.append(key, JSON.stringify(value));
+        formData.append(key, value);
       }
     }
 
@@ -62,6 +62,8 @@ const CreateBlogForm = () => {
         duration: 2000,
       });
     } else if (!!res.success) {
+      router.replace("/blog");
+
       return toast({
         variant: "success",
         duration: 2000,
@@ -218,7 +220,7 @@ const CreateBlogForm = () => {
                     </Label>
                   </div> */}
 
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center px-2 md:p-0 space-x-2">
                     <Switch
                       checked={field.value}
                       onCheckedChange={field.onChange}
@@ -241,7 +243,7 @@ const CreateBlogForm = () => {
             }
             type="submit"
             variant="default"
-            className="w-full  mt-4"
+            className="w-full px-2 md:p-0  mt-4"
           >
             SUBMIT
           </Button>

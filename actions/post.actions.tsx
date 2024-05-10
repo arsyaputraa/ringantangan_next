@@ -28,10 +28,10 @@ export async function POSTCreateBlog(formData: FormData) {
 
     const postData = {
       blogImage: formData.get("blogImage"),
-      content: JSON.parse(formData.get("content") as string),
-      title: JSON.parse(formData.get("title") as string),
-      subtitle: JSON.parse(formData.get("subtitle") as string),
-      isPublic: JSON.parse(formData.get("isPublic") as string),
+      content: formData.get("content"),
+      title: formData.get("title"),
+      subtitle: formData.get("subtitle"),
+      isPublic: formData.get("isPublic") === "true",
     };
 
     const validatedFields = createPostSchema.safeParse(postData);
@@ -60,7 +60,7 @@ export async function POSTCreateBlog(formData: FormData) {
     ) {
       imageUpload = await cloudinaryUploadImage({
         fileData: validatedFields.data.blogImage,
-        id: postId,
+        publicId: `${postId}_${new Date().toISOString()}`,
       });
       if (!imageUpload) {
         return {
@@ -92,7 +92,7 @@ export async function POSTCreateBlog(formData: FormData) {
   }
 }
 
-export async function POSTEditBlog(values: Post) {
+export async function POSTEditBlog(formData: FormData) {
   try {
     const { user } = await validateRequest();
 
@@ -102,11 +102,14 @@ export async function POSTEditBlog(values: Post) {
       };
     }
 
-    const postData: z.infer<typeof editPostSchema> = {
-      content: values.content!,
-      title: values.title,
-      subtitle: values.subtitle!,
-      isPublic: values.isPublic,
+    const postData = {
+      blogImage: formData.get("blogImage"),
+      content: formData.get("content"),
+      title: formData.get("title"),
+      subtitle: formData.get("subtitle"),
+      isPublic: formData.get("isPublic") === "true",
+      isDeleteImage: formData.get("isDeleteImage") === "true",
+      id: formData.get("id"),
     };
 
     const validatedFields = editPostSchema.safeParse(postData);
@@ -122,6 +125,72 @@ export async function POSTEditBlog(values: Post) {
         error: errorMessage,
       };
     }
+    const postId = formData.get("id") as string;
+    const imgPublicId = formData.get("imgPublicId") as string;
+
+    console.log(postId, imgPublicId);
+    let imageUpload;
+    if (
+      !!validatedFields.data.blogImage &&
+      !!(typeof validatedFields.data.blogImage !== "string")
+    ) {
+      // Update image logic
+      if (!!imgPublicId) {
+        imageUpload = await cloudinaryUploadImage({
+          fileData: validatedFields.data.blogImage,
+          publicId: imgPublicId.split("blogpost_image/")[1],
+        });
+      } else {
+        // add new image to current post
+        imageUpload = await cloudinaryUploadImage({
+          fileData: validatedFields.data.blogImage,
+          publicId: `${postId}_${new Date().toISOString()}`,
+        });
+      }
+
+      if (!imageUpload) {
+        return {
+          error: `Failed to upload Image`,
+        };
+      }
+      await db
+        .update(postTable)
+        .set({
+          title: validatedFields.data.title,
+          subtitle: validatedFields.data.subtitle,
+          content: validatedFields.data.content,
+          updatedBy: user.email,
+          imgPublicId: imageUpload.public_id,
+          imgUrl: imageUpload.secure_url,
+          lastUpdatedDate: new Date().toISOString(),
+          isPublic: validatedFields.data.isPublic,
+        })
+        .where(eq(postTable.id, postId));
+    } else if (
+      !!validatedFields.data.isDeleteImage &&
+      !!(typeof validatedFields.data.blogImage === "string")
+    ) {
+      if (!!imgPublicId) {
+        const deletedImage = await cloudinaryDeleteImage(imgPublicId);
+        if (!deletedImage) {
+          return { error: "Failed when trying to delete image" };
+        }
+
+        await db
+          .update(postTable)
+          .set({
+            title: validatedFields.data.title,
+            subtitle: validatedFields.data.subtitle,
+            content: validatedFields.data.content,
+            updatedBy: user.email,
+            imgPublicId: "",
+            imgUrl: "",
+            lastUpdatedDate: new Date().toISOString(),
+            isPublic: validatedFields.data.isPublic,
+          })
+          .where(eq(postTable.id, postId));
+      }
+    }
 
     await db
       .update(postTable)
@@ -133,7 +202,7 @@ export async function POSTEditBlog(values: Post) {
         lastUpdatedDate: new Date().toISOString(),
         isPublic: validatedFields.data.isPublic,
       })
-      .where(eq(postTable.id, values.id));
+      .where(eq(postTable.id, postId));
 
     revalidatePath("/blog");
 

@@ -57,7 +57,7 @@ export const HeroParallax = ({
   return (
     <div
       ref={ref}
-      className="h-[350vh] py-40 overflow-hidden  antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
+      className="h-[300vh] md:h-[350vh] py-40 overflow-hidden  antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
     >
       <Header />
       <motion.div
@@ -69,12 +69,12 @@ export const HeroParallax = ({
         }}
         className=""
       >
-        <motion.div className="flex flex-row-reverse space-x-reverse space-x-20 mb-20">
+        <motion.div className="flex flex-row-reverse space-x-reverse space-x-10 md:space-x-20 mb-10 md:mb-20">
           {firstRow.map((post) => (
             <PostCard post={post} translate={translateX} key={post.title} />
           ))}
         </motion.div>
-        <motion.div className="flex flex-row  mb-20 space-x-20 ">
+        <motion.div className="flex flex-row  mb-10 md:mb-20 space-x-10 md:space-x-20 ">
           {secondRow.map((post) => (
             <PostCard
               post={post}
@@ -100,11 +100,8 @@ export const Header = () => {
         Ringantangan <br />{" "}
         <span className="text-xl md:text-5xl">Social Organization</span>
       </h1>
-      <p className="max-w-2xl text-base md:text-xl mt-8 dark:text-neutral-200">
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Totam
-        reprehenderit expedita, aspernatur, eos possimus dolorum earum ducimus,
-        modi est qui commodi enim obcaecati odio rem veniam! Earum obcaecati eos
-        exercitationem?
+      <p className="max-w-2xl w-fit bg-yellow-500 font-semibold p-5 rounded-md text-lg md:text-2xl mt-8 text-neutral-200">
+        Be Kind
       </p>
     </div>
   );
@@ -130,7 +127,7 @@ export const PostCard = ({
         y: -20,
       }}
       key={post.title}
-      className="group/product h-80 w-[27rem] relative flex-shrink-0"
+      className="group/product h-52 md:h-80 w-[15rem] md:w-[27rem] relative flex-shrink-0"
     >
       <Link
         href={post.link}

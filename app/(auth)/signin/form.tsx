@@ -90,7 +90,7 @@ const SignInForm = () => {
     if (res.error) {
       toast({ variant: "destructive", description: res.error });
     } else if (res.success) {
-      window.location.href = res.data.toString();
+      router.replace(res.data.toString());
     }
   };
 

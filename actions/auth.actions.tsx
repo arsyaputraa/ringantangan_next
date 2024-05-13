@@ -7,7 +7,7 @@ import { emailVerificationTable } from "@/lib/db/schema/authSchema";
 import { google } from "@/lib/oauth";
 import { signInSchema, signUpSchema } from "@/lib/validationSchema/authSchema";
 import { generateCodeVerifier, generateState } from "arctic";
-import * as argon2 from "argon2";
+import bcrypt from "bcrypt";
 import { eq } from "drizzle-orm";
 import jwt from "jsonwebtoken";
 import { generateId } from "lucia";
@@ -16,7 +16,12 @@ import { cookies } from "next/headers";
 import { z } from "zod";
 
 export const signUp = async (values: z.infer<typeof signUpSchema>) => {
-  const hashedPassword = await argon2.hash(values.password);
+  // const hashedPassword = await argon2.hash(values.password);
+  let hashedPassword;
+  bcrypt.hash(values.password, 10, function (err, hash) {
+    if (!err) hashedPassword = hash;
+  });
+
   const userId = generateId(15);
   try {
     const userExist = await db.query.userTable.findFirst({
@@ -86,9 +91,19 @@ export const signIn = async (values: z.infer<typeof signInSchema>) => {
     };
   }
 
-  const isValidPassword = await argon2.verify(
+  // const isValidPassword = await argon2.verify(
+  //   existingUser.hashedPassword,
+  //   values.password
+  // );
+
+  let isValidPassword;
+  bcrypt.compare(
+    values.password,
     existingUser.hashedPassword,
-    values.password
+    function (err, result) {
+      if (!err) isValidPassword = result;
+      else isValidPassword = false;
+    }
   );
 
   if (!isValidPassword) {

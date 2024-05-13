@@ -6,7 +6,7 @@ const SignInButton = () => {
   const router = useRouter();
   return (
     <Button
-      className="bg-gray-500"
+      className="bg-blue-700 hover:bg-blue-600 md:bg-primary"
       onClick={() => {
         router.push("/signin");
       }}

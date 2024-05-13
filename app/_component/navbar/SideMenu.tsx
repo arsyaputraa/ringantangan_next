@@ -82,40 +82,45 @@ const SideMenu = () => {
               (user?.role === "superadmin" && (
                 <AdminCollapsibleButton pathname={pathname} />
               ))}
-            {!session && <SignInButton />}
           </Card>
         </div>
 
         <SheetFooter className="border-t-2 pt-5">
-          <DropdownMenu>
-            <DropdownMenuTrigger>
-              <div className="flex justify-end items-center just gap-2 text-sm font-bold">
-                <span className="flex flex-col items-end">
-                  <p>{user?.name}</p>
-                  <p className="text-gray-500 font-normal">{user?.email}</p>
-                </span>{" "}
-                <Avatar>
-                  <AvatarImage src={user?.avatar} />
-                  <AvatarFallback>
-                    {user?.name ? user.name.substring(0, 2).toUpperCase() : ""}
-                  </AvatarFallback>
-                </Avatar>
-              </div>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem>
-                <Button
-                  onClick={async () => {
-                    await signOut();
-                  }}
-                  variant="destructive"
-                >
-                  Sign Out
-                  <LogOutIcon size="sm" width={16} height={16} />
-                </Button>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {!session ? (
+            <SignInButton />
+          ) : (
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <div className="flex justify-end items-center just gap-2 text-sm font-bold">
+                  <span className="flex flex-col items-end">
+                    <p>{user?.name}</p>
+                    <p className="text-gray-500 font-normal">{user?.email}</p>
+                  </span>{" "}
+                  <Avatar>
+                    <AvatarImage src={user?.avatar} />
+                    <AvatarFallback>
+                      {user?.name
+                        ? user.name.substring(0, 2).toUpperCase()
+                        : ""}
+                    </AvatarFallback>
+                  </Avatar>
+                </div>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem>
+                  <Button
+                    onClick={async () => {
+                      await signOut();
+                    }}
+                    variant="destructive"
+                  >
+                    Sign Out
+                    <LogOutIcon size="sm" width={16} height={16} />
+                  </Button>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
         </SheetFooter>
       </SheetContent>
     </Sheet>

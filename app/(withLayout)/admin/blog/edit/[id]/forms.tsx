@@ -11,16 +11,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { toast } from "@/components/ui/use-toast";
 import { editPostSchema, Post } from "@/types/post";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Trash, Undo } from "lucide-react";
+import { LoaderIcon, Trash, Undo } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import Tiptap from "../../_components/tiptap";
+import { toast } from "sonner";
 
 const EditBlogForm = ({ post }: { post: Post }) => {
   const router = useRouter();
@@ -47,33 +47,25 @@ const EditBlogForm = ({ post }: { post: Post }) => {
         formData.append(key, value);
       }
     }
-    const res = await POSTEditBlog(formData);
 
-    if (!!res.error) {
-      return toast({
-        variant: "destructive",
-        description: res.error,
-        duration: 2000,
-      });
-    } else if (!!res.success) {
-      router.replace("/blog");
+    const editBlogPromise = new Promise(async (resolve, reject) => {
+      const res = await POSTEditBlog(formData);
+      if (!!res.error) {
+        reject(res.error);
+      } else resolve(res.success);
+    });
 
-      return toast({
-        variant: "success",
-        duration: 2000,
-
-        description: res.success ?? "Success",
-        action: (
-          <Button
-            onClick={() => {
-              router.replace("/blog");
-            }}
-          >
-            Great!
-          </Button>
-        ),
-      });
-    }
+    toast.promise(editBlogPromise, {
+      loading: (
+        <span className="flex gap-2 items-center justify-center">
+          <LoaderIcon className="animate-spin w-4 h-4" />{" "}
+          <p>Processing your changes..</p>
+        </span>
+      ),
+      success: "Data has been updated.",
+      error: (error) => `Something went wrong : ${error}`,
+      finally: () => router.replace("/admin/blog"),
+    });
   }
 
   return (

@@ -81,7 +81,6 @@ export async function POSTCreateBlog(formData: FormData) {
     });
 
     revalidatePath("/blog");
-
     return {
       success: "Post added",
     };
@@ -203,7 +202,7 @@ export async function POSTEditBlog(formData: FormData) {
       })
       .where(eq(postTable.id, postId));
 
-    revalidatePath("/blog");
+    revalidatePath("/admin/blog");
 
     return {
       success: "edit success",
@@ -236,7 +235,7 @@ export async function POSTToggleBlogVisibility({
       .set({ isPublic: show })
       .where(eq(postTable.id, id));
 
-    revalidatePath("/blog");
+    revalidatePath("/admin/blog");
 
     return {
       success: "Post deleted",
@@ -266,7 +265,7 @@ export async function DELETEpost({ id }: { id: string }) {
     if (!!deletedPost?.imgPublicId)
       await cloudinaryDeleteImage(deletedPost.imgPublicId);
 
-    revalidatePath("/blog");
+    revalidatePath("/admin/blog");
 
     return {
       success: "Post Deleted",

@@ -13,7 +13,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { toast } from "@/components/ui/use-toast";
 import { CreatePostType, createPostSchema } from "@/types/post";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -24,8 +23,9 @@ import { Switch } from "@/components/ui/switch";
 import { ChangeEvent, useState } from "react";
 import Image from "next/image";
 import post4 from "@/assets/images/ig/post_4.jpg";
-import { Trash, XIcon } from "lucide-react";
+import { LoaderIcon, Trash, XIcon } from "lucide-react";
 import { File } from "buffer";
+import { toast } from "sonner";
 
 const CreateBlogForm = () => {
   const router = useRouter();
@@ -53,33 +53,24 @@ const CreateBlogForm = () => {
       }
     }
 
-    const res = await POSTCreateBlog(formData);
+    const createBlogPromise = new Promise(async (resolve, reject) => {
+      const res = await POSTCreateBlog(formData);
+      if (!!res.error) {
+        reject(res.error);
+      } else resolve(res.success);
+    });
 
-    if (!!res.error) {
-      return toast({
-        variant: "destructive",
-        description: res.error,
-        duration: 2000,
-      });
-    } else if (!!res.success) {
-      router.replace("/blog");
-
-      return toast({
-        variant: "success",
-        duration: 2000,
-
-        description: res.success ?? "Success",
-        action: (
-          <Button
-            onClick={() => {
-              router.replace("/blog");
-            }}
-          >
-            Great!
-          </Button>
-        ),
-      });
-    }
+    toast.promise(createBlogPromise, {
+      loading: (
+        <span className="flex gap-2 items-center justify-center">
+          <LoaderIcon className="animate-spin w-4 h-4" />{" "}
+          <p>Creating Blog...</p>
+        </span>
+      ),
+      success: "Data has been updated.",
+      error: (error) => `Something went wrong : ${error}`,
+      finally: () => router.replace("/admin/blog"),
+    });
   }
 
   return (

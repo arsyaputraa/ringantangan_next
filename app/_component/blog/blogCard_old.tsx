@@ -61,7 +61,7 @@ const BlogCard = ({ data }: { data: Post }) => {
             <p className="text-primary-foreground/70">
               {dayjs(new Date(data.createdDate)).format("DD MMM YYYY")}
             </p>
-            <span className="flex items-center justify-center gap-1">
+            <span className="flex  items-center justify-center gap-1">
               <HeartIcon color="red" width={15} height={15} /> {data.likeCount}
             </span>
           </div>

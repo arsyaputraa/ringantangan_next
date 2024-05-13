@@ -78,10 +78,9 @@ const SideMenu = () => {
                 </Link>
               </Button>
             ))}
-            {user?.role === "admin" ||
-              (user?.role === "superadmin" && (
-                <AdminCollapsibleButton pathname={pathname} />
-              ))}
+            {(user?.role === "admin" || user?.role === "superadmin") && (
+              <AdminCollapsibleButton pathname={pathname} />
+            )}
           </Card>
         </div>
 

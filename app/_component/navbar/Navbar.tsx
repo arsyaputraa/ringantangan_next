@@ -61,8 +61,9 @@ const Navbar = () => {
               </li>
             );
           })}
-          {user?.role === "admin" ||
-            (user?.role === "superadmin" && <AdminSheet />)}
+          {(user?.role === "admin" || user?.role === "superadmin") && (
+            <AdminSheet />
+          )}
         </ul>
         {!!session ? (
           <>

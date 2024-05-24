@@ -1,46 +1,51 @@
 "use client";
-import { POSTEditBlog } from "@/actions/post.actions";
+import { DELETEImage, POSTCreateBlog } from "@/actions/post.actions";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
-import { editPostSchema, Post } from "@/types/post";
+import { Textarea } from "@/components/ui/textarea";
+import { CreatePostType, createPostSchema } from "@/types/post";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LoaderIcon, Trash, Undo } from "lucide-react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import Tiptap from "../../_components/tiptap";
+import Tiptap from "../_components/tiptap";
+import { Switch } from "@/components/ui/switch";
+import { ChangeEvent, useState } from "react";
+import Image from "next/image";
+import post4 from "@/assets/images/ig/post_4.jpg";
+import { LoaderIcon, Trash, XIcon } from "lucide-react";
+import { File } from "buffer";
 import { toast } from "sonner";
 
-const EditBlogForm = ({ post }: { post: Post }) => {
+const CreateBlogForm = () => {
   const router = useRouter();
-  const form = useForm<z.infer<typeof editPostSchema>>({
+  const [imagePreview, setImagePreview] = useState("");
+  const form = useForm<CreatePostType>({
     reValidateMode: "onBlur",
-    resolver: zodResolver(editPostSchema),
-    defaultValues: { ...post, isDeleteImage: false },
+    resolver: zodResolver(createPostSchema),
+    defaultValues: {
+      blogImage: {} as File,
+      title: "",
+      subtitle: "",
+      content: "",
+      isPublic: true,
+    },
   });
 
-  const [imagePreview, setImagePreview] = useState(post.imgUrl);
-
-  async function onSubmit(values: z.infer<typeof editPostSchema>) {
-    if (values.isDeleteImage) {
-      values = { ...values, blogImage: {} as File };
-    }
-    const newValue: Post = { ...post, ...values };
-
+  async function onSubmit(values: CreatePostType) {
     const formData = new FormData();
 
-    for (const [key, value] of Object.entries(newValue)) {
+    for (const [key, value] of Object.entries(values)) {
       if (key === "blogImage") {
         formData.append(key, value);
       } else {
@@ -48,18 +53,18 @@ const EditBlogForm = ({ post }: { post: Post }) => {
       }
     }
 
-    const editBlogPromise = new Promise(async (resolve, reject) => {
-      const res = await POSTEditBlog(formData);
+    const createBlogPromise = new Promise(async (resolve, reject) => {
+      const res = await POSTCreateBlog(formData);
       if (!!res.error) {
         reject(res.error);
       } else resolve(res.success);
     });
 
-    toast.promise(editBlogPromise, {
+    toast.promise(createBlogPromise, {
       loading: (
         <span className="flex gap-2 items-center justify-center">
           <LoaderIcon className="animate-spin w-4 h-4" />{" "}
-          <p>Processing your changes..</p>
+          <p>Creating Blog...</p>
         </span>
       ),
       success: "Data has been updated.",
@@ -74,7 +79,7 @@ const EditBlogForm = ({ post }: { post: Post }) => {
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col mt-4 pb-10 gap-3 items-center relative justify-start w-full mx-auto"
       >
-        <h1 className="text-2xl font-bold">EDIT POST</h1>
+        <h1 className="text-2xl font-bold">CREATE POST</h1>
         <FormField
           control={form.control}
           name="blogImage"
@@ -111,26 +116,10 @@ const EditBlogForm = ({ post }: { post: Post }) => {
                       type="button"
                       onClick={() => {
                         form.setValue("blogImage", {} as File);
-                        form.setValue("isDeleteImage", true);
                         setImagePreview("");
                       }}
                     >
                       <Trash className="h-4 w-4" />
-                    </Button>
-                  )}
-                  {!imagePreview && !!post.imgUrl && (
-                    <Button
-                      size="icon"
-                      variant="ghost"
-                      className="text-red-400"
-                      type="button"
-                      onClick={() => {
-                        form.setValue("blogImage", {} as File);
-                        form.setValue("isDeleteImage", false);
-                        setImagePreview(post.imgUrl);
-                      }}
-                    >
-                      <Undo className="h-4 w-4" />
                     </Button>
                   )}
                 </div>
@@ -159,7 +148,7 @@ const EditBlogForm = ({ post }: { post: Post }) => {
                 <Input
                   className="mt-2 border-none focus-visible:border-none text-xl font-bold"
                   type="text"
-                  placeholder="Title"
+                  placeholder="Write down your title right here..."
                   {...field}
                 />
               </FormControl>
@@ -176,7 +165,7 @@ const EditBlogForm = ({ post }: { post: Post }) => {
                 <Input
                   className="mt-2 border-none focus-visible:border-none text-lg"
                   type="text"
-                  placeholder="subtitle"
+                  placeholder="Write down your subtitle right here..."
                   {...field}
                 />
               </FormControl>
@@ -203,7 +192,7 @@ const EditBlogForm = ({ post }: { post: Post }) => {
             </FormItem>
           )}
         />
-        <div className="w-full flex flex-col max-w-2xl justify-center ">
+        <div className="w-full flex flex-col max-w-2xl justify-center">
           <FormField
             control={form.control}
             name="isPublic"
@@ -226,9 +215,9 @@ const EditBlogForm = ({ post }: { post: Post }) => {
                     <Switch
                       checked={field.value}
                       onCheckedChange={field.onChange}
-                      id="public post"
+                      id="public_post"
                     />
-                    <Label htmlFor="public post">Make Post Public</Label>
+                    <Label htmlFor="public_post">Make Post Public</Label>
                   </div>
                 </FormControl>
                 <FormMessage />
@@ -245,7 +234,7 @@ const EditBlogForm = ({ post }: { post: Post }) => {
             }
             type="submit"
             variant="default"
-            className="w-full px-2 md:p-0 mt-4"
+            className="w-full px-2 md:p-0  mt-4"
           >
             SUBMIT
           </Button>
@@ -255,4 +244,4 @@ const EditBlogForm = ({ post }: { post: Post }) => {
   );
 };
 
-export default EditBlogForm;
+export default CreateBlogForm;

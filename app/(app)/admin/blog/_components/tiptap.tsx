@@ -9,9 +9,16 @@ import { cn } from "@/lib/utils";
 import HardBreak from "@tiptap/extension-hard-break";
 import BulletList from "@tiptap/extension-bullet-list";
 import TextAlign from "@tiptap/extension-text-align";
+import { Placeholder } from "@tiptap/extension-placeholder";
 
+const tiptapPlaceholder = "Start writing post content here...";
 export const tiptapExtensions = [
   StarterKit.configure({}),
+  Placeholder.configure({
+    placeholder: tiptapPlaceholder,
+    emptyEditorClass:
+      "cursor-text before:content-[attr(data-placeholder)] before:absolute before:top-4 before:left-5 before:text-mauve-11 before:opacity-50 before-pointer-events-none",
+  }),
   Heading.configure({
     HTMLAttributes: {
       class: "text-xl font-bold",
@@ -55,6 +62,7 @@ const Tiptap = ({
         ),
       },
     },
+
     onUpdate({ editor }) {
       onChange(editor.getHTML());
     },
@@ -63,7 +71,10 @@ const Tiptap = ({
   return (
     <div className="flex flex-col gap-1 justify-stetch min-h-[300px]">
       <Toolbar editor={editor} />
-      <EditorContent editor={editor} />
+      <EditorContent
+        editor={editor}
+        placeholder="Start writing the post content..."
+      />
     </div>
   );
 };
